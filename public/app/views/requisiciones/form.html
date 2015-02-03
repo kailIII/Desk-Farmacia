@@ -1,0 +1,45 @@
+
+<div class="modal-header">
+    <h3 class="modal-title text-center">San Nicolas: Cliente</h3>
+</div>
+
+<div class="modal-body content">
+    <div class="box">
+        <div class="box-body">
+
+            <alertas></alertas>
+
+            <form name="formulario" role="form" >
+                <div class="form-group">
+                    <label class="control-label" for="nombre"> Nombre:</label>
+                    <div class="controls">
+                        <input type="text" class="form-control" ng-model="cliente.nombre" placeholder="Nombre" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="telefono"> Teléfono:</label>
+                    <div class="controls">
+                        <input type="tel" class="form-control" ng-model="cliente.telefono" placeholder="Teléfono" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="direccion"> Dirección:</label>
+                    <div class="controls">
+                        <textarea class="form-control" rows="3" ng-model="cliente.direccion" placeholder="direccion" required></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="email"> Correo:</label>
+                    <div class="controls">
+                        <input type="email" class="form-control" ng-model="cliente.email" placeholder="correo" required />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-primary pull-right" ng-click="Guardar(cliente);" ng-disabled="formulario.$invalid">Guardar</button>
+            <a href="" class="btn" ng-click="Cancelar();">Cancelar</a>
+        </div>
+    </div>
+</div>
+

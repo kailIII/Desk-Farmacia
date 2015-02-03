@@ -1,0 +1,20 @@
+<div ng-controller="DireccionCtrl">
+<div class="form-group col-xs-6">
+    <label class="control-label" for="departamento"> Departamento:</label>
+    <div class="controls">
+        <select class="form-control" ng-change="select_departamento(departamento.id);" ng-model="departamento"
+            ng-options="opt as opt.nombre for opt in departamentos">
+        </select>
+    </div>
+</div>
+<div class="form-group col-xs-6">
+    <label class="control-label" for="municipio"> {{tabla.nombre}} Municipio:</label>
+    <div class="controls">
+        <select class="form-control" ng-change="select_municipio(municipio.id);" ng-model="municipio"
+			ng-options="opt as opt.nombre for opt in municipios">
+		</select>
+		<input type="hidden" ng-model="tabla.municipio_id">
+    </div>
+</div>
+	
+</div>

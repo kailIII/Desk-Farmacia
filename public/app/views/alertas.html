@@ -1,0 +1,6 @@
+<!-- <div class="callout callout-info">
+    <h4>Ojo</h4>
+    <p ng-repeat='alert in alertas' type='{{alert.type}}' close='closeAlert($index)'>{{alert.msg}}</p>
+</div> -->
+
+<alert ng-repeat='alerta in alertas' type='{{alerta.type}}' close='closeAlert()'>{{alerta.msg}}</alert>

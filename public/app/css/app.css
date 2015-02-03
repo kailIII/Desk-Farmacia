@@ -1,0 +1,89 @@
+/* app css stylesheet */
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}
+
+/*Tablas*/
+  th{
+    cursor: pointer;
+  }
+  th>span{
+    margin-top: 7px;
+  }
+  .tool{
+    margin: 10px;
+  }
+/**/
+
+.alert {
+  margin-left: 0px;
+  padding: 5px 30px;
+}
+
+.left{
+  padding-left: 0px;
+}
+.right{
+  padding-right: 0px;
+}
+
+/*Ventas*/
+
+.full .modal-dialog{
+    width:1200px;
+}
+
+.normal .modal-dialog{
+    width:600px;
+}
+
+.mini .modal-dialog{
+    width:300px;
+}
+
+
+.table > thead > tr > td {
+    padding: 4px !important;
+    border-top: 0px !important;
+}
+
+.lista-productos{
+  height:300px; 
+  border-bottom: 1px solid gray;
+  overflow: auto;
+}
+
+.list-group{
+  position: absolute;
+  z-index: 2;
+  width: 300px;
+}
+.list-group-item:hover{
+  cursor: pointer;
+}

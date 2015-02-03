@@ -1,0 +1,34 @@
+<form name="form_venta" class="form-vertical" role="form" >
+    <div class="form-group col-sm-6">
+        <label class="control-label"> Fecha:</label>
+        <div class="controls">
+            <input type="date" class="form-control" ng-model="venta.fecha" placeholder="Fecha" required />
+        </div>
+    </div>
+    <div class="form-group col-sm-6">
+        <label class="control-label"> Factura:</label>
+        <div class="controls">
+            <input type="text" class="form-control" ng-model="venta.factura" placeholder="Factura" required />
+        </div>
+    </div>
+    <div class="form-group col-sm-6">
+        <label class="control-label"> Tipo:</label>
+        <div class="controls">
+            <select class="form-control"  ng-model="tipo_factura" ng-change="venta.tipo_factura_id = tipo_factura.id"
+                ng-options="opt as opt.nombre for opt in tipos" required>
+            </select>
+        </div>
+    </div>
+    <div class="form-group col-sm-6">
+        <label class="control-label"> Cliente:</label>
+        <div class="controls">
+            <input type="text" ng-change="buscarCliente(txtcliente);" class="form-control" ng-model="txtcliente" placeholder="Cliente" required />
+            <input type="hidden" ng-model="venta.cliente_id" required>
+            <div class="list-group">
+                <a href="" class="list-group-item" ng-repeat="result in results" ng-click="selectCliente(result)">
+                    {{result.nombre}}
+                </a>
+            </div>
+        </div>
+    </div>
+</form>

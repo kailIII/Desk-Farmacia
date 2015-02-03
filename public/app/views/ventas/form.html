@@ -1,0 +1,61 @@
+
+<div class="modal-header">
+    <h3 class="modal-title text-center">San Nicolas: Venta</h3>
+</div>
+
+<div class="modal-body content">
+
+<alertas></alertas>
+<div class="row">
+    <!-- Detalle -->
+    <div class="col-sm-5">
+        <div class="box" style="height:400px">
+            <div class="box-header">
+                <center><h3 class="box-title">Detalle de Venta</h3></center>
+            </div>
+            
+            <div class="box-body">
+                <venta ng-show="!view"></venta>
+                <detalle ng-show="view"></detalle>
+            
+            <div class="row">
+                <div class="col-sm-12">
+                    <button class="btn btn-primary btn-block" ng-show="!view" ng-click="AddVenta(venta); view = true;" ng-disabled="form_venta.$invalid"><i class="glyphicon glyphicon-ok"></i> Guardar
+                    </button>
+
+                    <button class="btn btn-primary btn-block" ng-show="view" ng-click="AddDetalle(detalle)" ng-disabled="form_detalle.$invalid"><i class="glyphicon glyphicon-plus"></i> Agregar
+                    </button>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <button class="btn btn-default btn-block" ng-show="view" ng-click="view = !view">
+                        <i class="glyphicon glyphicon-pencil"></i> Editar
+                    </button>
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-default btn-block" ng-show="view" ng-click="">
+                        <i class="glyphicon glyphicon-print"></i> Imprimir
+                    </button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- Factura -->
+    <div class="col-sm-7">
+        <div class="box" style="height:400px;">
+            <div class="box-body">
+                <factura></factura>
+            </div>
+        </div>
+    </div>
+    <!-- Guardar -->
+    <div class="col-sm-12">
+        <div class="box-footer">
+            <button class="btn btn-primary pull-right" ng-click="Ok();">Guardar</button>
+            <a href="" class="btn" ng-click="Cancelar();">Salir</a>
+        </div>
+    </div>
+</div>

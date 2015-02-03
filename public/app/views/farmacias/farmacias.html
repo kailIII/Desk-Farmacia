@@ -1,0 +1,51 @@
+<div class="box">
+
+<toolbar></toolbar>
+
+<div class="box-body table-responsive">
+<table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th ng-click="columna = 'nombre'; orden=!orden">Nombre <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'direccion'; orden=!orden">Dirección <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'telefono'; orden=!orden">Teléfono <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'web'; orden=!orden">Web <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'email'; orden=!orden">Correo <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'municipio'; orden=!orden">Municipio <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'departamento'; orden=!orden">Departamento <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'num_sucursales'; orden=!orden">Sucursales <span class="caret pull-right"></span></th>
+        <th class="text-center"><i class="fa fa-cog"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="farmacia in farmacias">
+            <td>{{farmacia.nombre}}</td> 
+            <td>{{farmacia.direccion | limitTo:20}}</td> 
+            <td>{{farmacia.telefono}}</td>
+            <td>{{farmacia.web}}</td>
+            <td>{{farmacia.email}}</td>
+            <td>{{farmacia.municipio}}</td>
+            <td>{{farmacia.departamento}}</td>
+            <td>{{farmacia.num_sucursales}}</td>
+            <td>
+              <button class="btn btn-sm" type="button" title="Ver">
+                  <i class="glyphicon glyphicon-user"></i>
+              </button>
+              <button class="btn btn-sm" type="button" title="Actualizar" ng-click="modalactualizar(farmacia)">
+                  <i class="glyphicon glyphicon-pencil"></i>
+              </button>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Nombre</th> <th>Dirección</th> <th>Teléfono</th>
+            <th>Web</th> <th>Correo</th> <th>Municipio</th>
+            <th>Departamento</th> <th>Sucursales</th>
+            <th class="text-center"><i class="fa fa-cog"></i></th>
+        </tr>
+    </tfoot>
+</table>
+</div>
+</div>
+
