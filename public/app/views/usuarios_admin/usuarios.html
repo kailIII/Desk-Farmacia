@@ -7,12 +7,14 @@
     <thead>
       <tr>
         <th ng-click="columna = 'nombre'; orden=!orden">Nombre <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'telefono'; orden=!orden">email <span class="caret pull-right"></span></th>
         <th class="text-center"><i class="fa fa-cog"></i></th>
       </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="entidad in categorias | orderBy:columna:orden  | filter:buscar">
-          <td>{{entidad.nombre}}</td>
+        <tr ng-repeat="entidad in usuarios | orderBy:columna:orden  | filter:buscar">
+          <td>{{entidad.user}}</td> 
+          <td>{{entidad.email}}</td> 
           <td class="text-center">
             <opciones></opciones>
           </td>
@@ -21,6 +23,7 @@
     <tfoot>
       <tr>
         <th ng-click="columna = 'nombre'; orden=!orden">Nombre <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'telefono'; orden=!orden">email <span class="caret pull-right"></span></th>
         <th class="text-center"><i class="fa fa-cog"></i></th>
       </tr>
     </tfoot>

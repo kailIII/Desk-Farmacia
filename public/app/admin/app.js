@@ -20,13 +20,9 @@ var app = angular.module('farmacia', ['ngRoute', 'ui.bootstrap', 'farmaciaFilter
 			controller: 'FarmaciasCtrl',
 			templateUrl: 'app/views/farmacias/farmacias.html'
 		})
-		.when('/sucursales',{
-			controller: 'SucursalesCtrl',
-			templateUrl: 'app/views/sucursales/sucursales.html'
-		})
 		.when('/usuarios',{
 			controller: 'UsuariosCtrl',
-			templateUrl: 'app/views/usuarios/usuarios.html'
+			templateUrl: 'app/views/usuarios_admin/usuarios.html'
 		})
 		.otherwise({
 			redirectTo: '/'

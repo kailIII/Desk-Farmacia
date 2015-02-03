@@ -18,22 +18,17 @@
       </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="farmacia in farmacias">
-            <td>{{farmacia.nombre}}</td> 
-            <td>{{farmacia.direccion | limitTo:20}}</td> 
-            <td>{{farmacia.telefono}}</td>
-            <td>{{farmacia.web}}</td>
-            <td>{{farmacia.email}}</td>
-            <td>{{farmacia.municipio}}</td>
-            <td>{{farmacia.departamento}}</td>
-            <td>{{farmacia.num_sucursales}}</td>
-            <td>
-              <button class="btn btn-sm" type="button" title="Ver">
-                  <i class="glyphicon glyphicon-user"></i>
-              </button>
-              <button class="btn btn-sm" type="button" title="Actualizar" ng-click="modalactualizar(farmacia)">
-                  <i class="glyphicon glyphicon-pencil"></i>
-              </button>
+        <tr ng-repeat="entidad in farmacias">
+            <td>{{entidad.nombre}}</td> 
+            <td>{{entidad.direccion | limitTo:20}}</td> 
+            <td>{{entidad.telefono}}</td>
+            <td>{{entidad.web}}</td>
+            <td>{{entidad.email}}</td>
+            <td>{{entidad.municipio}}</td>
+            <td>{{entidad.departamento}}</td>
+            <td class="text-center">{{entidad.num_sucursales}}</td>
+            <td class="text-center">
+              <opciones></opciones>
             </td>
         </tr>
     </tbody>

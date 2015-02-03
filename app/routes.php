@@ -15,6 +15,9 @@ Route::group(array('before'=>'auth'), function()
         
         Route::controller('productos', 'ProductoController');
         Route::controller('farmacias','FarmaciaController');
+        Route::controller('a_usuarios','UserController');
+        Route::controller('categorias','CategoriaController');
+
         Route::controller('sucursales','SucursalesController');
         Route::controller('clientes','clienteController');
         Route::controller('proveedores','ProveedorController');

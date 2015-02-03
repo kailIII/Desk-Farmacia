@@ -18,10 +18,18 @@ angular.module('farmaciaControllers', [])
 
 	$scope.modalcrear = function () {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/productos/form.html',
+	      	templateUrl: 'app/views/productos_admin/form.html',
 	      	size: 'lg',
 	     	controller:  function ($scope, $modalInstance, Api) {
 	     		var productos = [];
+	     		Api.get('categorias').then(function(data){
+	     			$scope.categorias = data;
+	     		});
+	     		$scope.buscar_subcat = function(id){
+	     			Api.get('subcategorias/'+ id).then(function(data){
+	     				$scope.subcategorias = data;
+	     			});
+	     		};
 	     		$scope.Ok = function(producto){
 	     			if (!formulario.$invalid) {
 			  			Api.post('productos/guardar', producto).then(function(data){
@@ -50,10 +58,21 @@ angular.module('farmaciaControllers', [])
 
 	$scope.modalactualizar = function (producto_id) {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/productos/form.html',
+	      	templateUrl: 'app/views/productos_admin/form.html',
 	      	size: 'lg',
 	     	controller:  function ($scope, $modalInstance, producto) {
 	     		$scope.producto = producto;
+	     		Api.get('categorias').then(function(data){
+	     			$scope.categorias = data;
+	     			$scope.cat = $scope.categorias[producto.categoria_id-1];
+	     			$scope.subcategorias = [{'id':producto.subcategoria_id,'nombre':producto.subcategoria}];
+	     			$scope.subcat = $scope.subcategorias[0];
+	     		});
+	     		$scope.buscar_subcat = function(id){
+	     			Api.get('subcategorias/'+ id).then(function(data){
+	     				$scope.subcategorias = data;
+	     			});
+	     		};
 	     		$scope.Ok = function(producto){
 	     			if (!formulario.$invalid) {
 			  	 		$modalInstance.close($scope.producto);
@@ -203,53 +222,57 @@ angular.module('farmaciaControllers', [])
 	};
 })
 
-.controller('SucursalesCtrl', function (Api, $scope, $modal, $log){
-	$scope.sucursales = [];
-	$scope.sucursal = {};
+.controller('UsuariosCtrl', function (Api, $scope, $log, $modal){
+	$scope.usuarios = [];
+	$scope.usuario = {};
 	$scope.alertas = [];
 
-    Api.get('sucursales/ver').then(function(data){
-		$scope.sucursales = data;
+    Api.get('a_usuarios/ver').then(function(data){
+		$scope.usuarios = data;
 	});
 
 	$scope.modalcrear = function () {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/sucursales/form.html',
-	      	size: 'lg',
-	     	controller:  function ($scope, $modalInstance) {
-	     		$scope.Ok = function(sucursal){
+	      	templateUrl: 'app/views/usuarios_admin/form.html',
+	      	windowClass: 'normal',
+	      	backdrop : 'static',
+	     	controller:  function ($scope, $modalInstance, Api) {
+	     		var usuarios = [];
+	     		$scope.Ok = function(usuario){
 	     			if (!formulario.$invalid) {
-			  	 		$modalInstance.close(sucursal);
+			  			Api.post('usuarios/guardar', usuario).then(function(data){
+							$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
+							usuarios.push(usuario);
+							$scope.usuario = {};
+			  			},
+							function (data){
+								$scope.alertas = data;
+							}
+			  			);
 			  	 	}
 			  	};
 			  	$scope.Cancelar = function () {
-				    $modalInstance.dismiss('cancelar');
+				   $modalInstance.close(usuarios);
 				};
 			}
 	    });
 
-	    modalInstance.result.then(function (sucursal) {
-  			Api.post('sucursales/guardar', sucursal).then(function(data){
-				$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
-				$scope.sucursales.push(sucursal);
-				$scope.sucursal = {};
-  			},
-				function (data){
-					$scope.alertas = data;
-				}
-  			);			  	 
+	    modalInstance.result.then(function (usuarios) {
+  			for (var i = usuarios.length - 1; i >= 0; i--) {
+	    		$scope.usuarios.unshift(usuarios[i]);
+	    	};
 	    });
 	};
 
-	$scope.modalactualizar = function (sucursal_id) {
+	$scope.modalactualizar = function (usuario_id) {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/sucursales/form.html',
+	      	templateUrl: 'app/views/usuarios_admin/form.html',
 	      	size: 'lg',
-	     	controller:  function ($scope, $modalInstance, sucursal) {
-	     		$scope.sucursal = sucursal;
-	     		$scope.Ok = function(sucursal){
+	     	controller:  function ($scope, $modalInstance, usuario, $log) {
+	     		$scope.usuario = usuario;
+	     		$scope.Ok = function(usuario){
 	     			if (!formulario.$invalid) {
-			  	 		$modalInstance.close($scope.sucursal);
+			  	 		$modalInstance.close($scope.usuario);
 			  	 	}
 			  	};
 			  	$scope.Cancelar = function () {
@@ -257,53 +280,100 @@ angular.module('farmaciaControllers', [])
 				};
 			},
 			resolve: {
-		        sucursal: function () {
-		          return sucursal_id;
+		        usuario: function () {
+		          return usuario_id;
 		        }
 		    }
 	    });
 
-	    modalInstance.result.then(function (sucursal) {
-  			Api.post('sucursales/guardar', sucursal).then(function(data){
+	    modalInstance.result.then(function (usuario) {
+  			Api.post('usuarios/guardar', usuario).then(function(data){
 				$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
-				$log.info(data);
-				$scope.sucursal = {};
+				$scope.usuario = {};
   			},
 				function (data){
-					$log.info(data);
 					$scope.alertas = data;
 				}
   			);					  	 
 	    });
 	};
-
 })
 
-.controller('CategoriasCtrl', function (Api, $scope, $log){
+.controller('CategoriasCtrl', function (Api, $scope, $log, $modal){
+	$scope.categorias = [];
+	$scope.categoria = {};
+	$scope.alertas = [];
 
-    Api.get('categorias').then(function(data){
+    Api.get('categorias/ver').then(function(data){
 		$scope.categorias = data;
-		if ($scope.cat > 0) {
-			$scope.categoria = data[$scope.cat - 1];
-			$scope.getsubcategoria($scope.subcat);
-		};
 	});
 
-	Api.get('subcategorias/0').then(function(data){
-		$scope.subcategorias = data;
-	});
+	$scope.modalcrear = function () {
+	    var modalInstance = $modal.open({
+	      	templateUrl: 'app/views/categorias/form.html',
+	      	windowClass: 'normal',
+	      	backdrop : 'static',
+	     	controller:  function ($scope, $modalInstance, Api) {
+	     		var categorias = [];
+	     		$scope.Ok = function(categoria){
+	     			$log.info(categoria);
+	     			if (!formulario.$invalid) {
+			  			Api.post('categorias/guardar', categoria).then(function(data){
+							$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
+							categorias.push(categoria);
+							$scope.categoria = {};
+			  			},
+							function (data){
+								$scope.alertas = data;
+							}
+			  			);
+			  	 	}
+			  	};
+			  	$scope.Cancelar = function () {
+				   $modalInstance.close(categorias);
+				};
+			}
+	    });
 
-	$scope.select_categoria= function(id){
-		Api.get('subcategorias/'+ id).then(function(data){
-			$scope.subcategoria = data;
-			$log.info(id);
-		});
+	    modalInstance.result.then(function (categorias) {
+  			for (var i = categorias.length - 1; i >= 0; i--) {
+	    		$scope.categorias.unshift(categorias[i]);
+	    	};
+	    });
 	};
 
-	$scope.getsubcategoria = function(id){
-		Api.get('subcategoria/'+ id).then(function(data){
-			$scope.subcategoria = $scope.subcategorias[id - 1];
-		});
+	$scope.modalactualizar = function (categoria_id) {
+	    var modalInstance = $modal.open({
+	      	templateUrl: 'app/views/categorias/form.html',
+	      	size: 'lg',
+	     	controller:  function ($scope, $modalInstance, categoria, $log) {
+	     		$scope.categoria = categoria;
+	     		$scope.Ok = function(categoria){
+	     			if (!formulario.$invalid) {
+			  	 		$modalInstance.close($scope.categoria);
+			  	 	}
+			  	};
+			  	$scope.Cancelar = function () {
+				    $modalInstance.dismiss('cancelar');
+				};
+			},
+			resolve: {
+		        categoria: function () {
+		          return categoria_id;
+		        }
+		    }
+	    });
+
+	    modalInstance.result.then(function (categoria) {
+  			Api.post('categorias/guardar', categoria).then(function(data){
+				$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
+				$scope.categoria = {};
+  			},
+				function (data){
+					$scope.alertas = data;
+				}
+  			);					  	 
+	    });
 	};
 
 });

@@ -4,7 +4,7 @@ class SucursalesController extends BaseController {
 
     public function getVer()
     {
-        $farmacia_id = Auth::user()->farmacia->id;
+        $farmacia_id = Auth::user()->sucursal->farmacia->id;
 
         if ( $farmacia_id == 1) {
             $sucursales = V_Sucursal::all();
@@ -21,9 +21,8 @@ class SucursalesController extends BaseController {
     {
         $data = Input::all();
         $data['farmacia_id'] = "2";
-        $data['municipio_id'] = "1";
 
-         if(Input::has('id'))
+        if(Input::has('id'))
             $sucursal = Sucursal::find(Input::get('id'));
         else
             $sucursal = new Sucursal;

@@ -24,12 +24,6 @@
             <i class="fa fa-table"></i> <span>Farmacias</span>
         </a>
     </li>
-    <!-- Sucursales -->
-    <li>
-        <a href="#/sucursales">
-            <i class="fa fa-table"></i> <span>Sucursales</span>
-        </a>
-    </li>
     <!-- Admon -->
     <li class="treeview">
         <a href="#">

@@ -10,7 +10,6 @@ class ProductoController extends BaseController {
 
         if ($tipo_user === 1)
             $productos = V_Producto::orderBy('id','dsc')->get();
-            // return "admin";
 
         if ($tipo_user === 2)
             // $productos = V_ProductosFarmacia::where('farmacia_id', $farmacia)->get();

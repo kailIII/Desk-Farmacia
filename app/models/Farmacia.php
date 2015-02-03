@@ -36,11 +36,10 @@ class Farmacia extends Eloquent {
         public function validar($datos) 
         {        
             $reglas = array(
-                'activa' => 'required',
-                'direccion' => 'required',
                 'nombre' => 'required',
-                'telefono' => 'required',
-                // 'email' => 'email|required|max:75|unique:farmacias',
+                'direccion' => 'required',
+                'activa' => 'required',
+                'email' => 'email|required|max:100',
                 'municipio_id' => 'required'
             );
             
