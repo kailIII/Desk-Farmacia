@@ -1,0 +1,47 @@
+<form name="form_compra" class="form-vertical" role="form" >
+
+<!-- Fecha -->
+<div class="col-xs-12">
+    <h4 class="text-center" ng-model="compra.fecha">{{compra.fecha | date: "medium"}}</h4>
+</div>
+
+<!-- Proveedor -->
+<div class="col-xs-12">
+    <div class="form-group">
+        <label class="control-label"> Proveedor:</label>
+        <div class="controls">
+            <input type="search" ng-change="buscarProveedor(txtproveedor); compra.proveedor = txtproveedor" class="form-control" ng-model="txtproveedor" placeholder="Nombre" required />
+            <input type="hidden" ng-model="compra.proveedor_id" required>
+            <div class="list-group">
+                <a href="" class="list-group-item" ng-repeat="result in results" ng-click="selectProveedor(result)">
+                    {{result.nombre}}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xs-12">
+    <div class="form-group">
+        <label class="control-label"> Factura:</label>
+        <div class="controls">
+            <input type="text" class="form-control" ng-model="compra.factura" placeholder="Factura" required />
+        </div>
+    </div>
+</div>
+<div class="col-xs-6">
+    <div class="form-group">
+        <label class="control-label"> Lote:</label>
+        <div class="controls">
+            <input type="text" class="form-control" ng-model="compra.lote" placeholder="Lote" required />
+        </div>
+    </div>
+</div>
+<div class="col-xs-6">
+    <div class="form-group">
+        <label class="control-label"> Vencimiento:</label>
+        <div class="controls">
+            <input type="date" class="form-control" ng-model="compra.vencimiento" placeholder="vencimiento" required />
+        </div>
+    </div>
+</div>
+</form>

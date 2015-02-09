@@ -28,7 +28,8 @@ return array(
 	|
 	*/
 
-	'host' => 'smtp.mailgun.org',
+	// 'host' => 'smtp.mailgun.org',
+	'host' => 'smtp.gmail.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +55,8 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => null, 'name' => null),
+	// 'from' => array('address' => null, 'name' => null),
+	'from' => array('address' => 'alvarado.websis@gmail.com', 'name' => 'Sistema Farmacia'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +82,8 @@ return array(
 	|
 	*/
 
-	'username' => null,
+	// 'username' => null,
+	'username' => 'alvarado.websis@gmail.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +96,8 @@ return array(
 	|
 	*/
 
-	'password' => null,
+	// 'password' => null,
+	'password' => 'Ing.Alvarado',
 
 	/*
 	|--------------------------------------------------------------------------

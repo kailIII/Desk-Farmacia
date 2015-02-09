@@ -15,6 +15,9 @@ class CreateProductosFarmaciasTable extends Migration {
         Schema::create('productos_farmacias',function($table){
             $table->increments('id');
 
+            $table->integer('cantidad');
+            $table->integer('minimo');
+            $table->double('precio',6,2);
             $table->integer('producto_id')->unsigned();
             $table->integer('farmacia_id')->unsigned();
 			

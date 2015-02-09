@@ -1,6 +1,6 @@
 
 <div class="modal-header">
-    <h3 class="modal-title text-center">San Nicolas: Venta</h3>
+    <h3 class="modal-title text-center">Venta</h3>
 </div>
 
 <div class="modal-body content">
@@ -9,7 +9,7 @@
 <div class="row">
     <!-- Detalle -->
     <div class="col-sm-5">
-        <div class="box" style="height:400px">
+        <div class="box" style="height:400px" ng-init="iniciar();">
             <div class="box-header">
                 <center><h3 class="box-title">Detalle de Venta</h3></center>
             </div>
@@ -20,9 +20,6 @@
             
             <div class="row">
                 <div class="col-sm-12">
-                    <button class="btn btn-primary btn-block" ng-show="!view" ng-click="AddVenta(venta); view = true;" ng-disabled="form_venta.$invalid"><i class="glyphicon glyphicon-ok"></i> Guardar
-                    </button>
-
                     <button class="btn btn-primary btn-block" ng-show="view" ng-click="AddDetalle(detalle)" ng-disabled="form_detalle.$invalid"><i class="glyphicon glyphicon-plus"></i> Agregar
                     </button>
                 </div>

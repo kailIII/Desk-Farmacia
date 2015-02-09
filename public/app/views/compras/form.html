@@ -1,45 +1,61 @@
 
 <div class="modal-header">
-    <h3 class="modal-title text-center">San Nicolas: Cliente</h3>
+    <h3 class="modal-title text-center">Compra <i class="badge"># {{ingresados.length}}</i></h3>
 </div>
 
 <div class="modal-body content">
-    <div class="box">
-        <div class="box-body">
 
-            <alertas></alertas>
+<alertas></alertas>
+<div class="row">
+    <!-- Detalle -->
+    <div class="col-xs-5">
+        <div class="box" style="height:400px" ng-init="iniciar()">
+            <!-- <div class="box-header">
+                <center><h3 class="box-title">Detalle de Compra</h3></center>
+            </div> -->
+            <div class="box-body">
+                <compra ng-show="!view"></compra>
+                <detallecompra ng-show="view"></detallecompra>
+            <div class="row">
+                <br>
+                <div class="col-xs-12">
+                    <button class="btn btn-primary btn-block" ng-show="!view" ng-click="AddCompra(compra); view = true;" ng-disabled="form_compra.$invalid"><i class="glyphicon glyphicon-ok"></i> Guardar
+                    </button>
 
-            <form name="formulario" role="form" >
-                <div class="form-group">
-                    <label class="control-label" for="nombre"> Fecha:</label>
-                    <div class="controls">
-                        <input type="date" class="form-control" ng-model="cliente.nombre" placeholder="Nombre" required />
-                    </div>
+                    <button class="btn btn-primary btn-block" ng-show="view" ng-click="AddDetalle(detalle)" ng-disabled="form_detalle.$invalid"><i class="glyphicon glyphicon-plus"></i> Agregar
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label class="control-label" for="telefono"> Factura:</label>
-                    <div class="controls">
-                        <input type="tel" class="form-control" ng-model="cliente.telefono" placeholder="Teléfono" required />
-                    </div>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-xs-6">
+                    <button class="btn btn-default btn-block" ng-show="view" ng-click="view = !view">
+                        <i class="glyphicon glyphicon-pencil"></i> Editar
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label class="control-label" for="direccion"> Lote:</label>
-                    <div class="controls">
-                        <textarea class="form-control" rows="3" ng-model="cliente.direccion" placeholder="direccion" required></textarea>
-                    </div>
+                <div class="col-xs-6">
+                    <button class="btn btn-default btn-block" ng-show="view" ng-click="">
+                        <i class="glyphicon glyphicon-print"></i> Imprimir
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label class="control-label" for="email"> Vencimiento:</label>
-                    <div class="controls">
-                        <input type="date" class="form-control" ng-model="cliente.email" placeholder="correo" required />
-                    </div>
-                </div>
-            </form>
+            </div>
+            </div>
         </div>
+    </div>
+    <!-- Factura -->
+    <div class="col-xs-7">
+        <div class="box" style="height:400px;">
+            <div class="box-body">
+                <facturacompra></facturacompra>
+            </div>
+        </div>
+    </div>
+    <!-- Guardar -->
+    <div class="col-xs-12">
         <div class="box-footer">
-            <button class="btn btn-primary pull-right" ng-click="Guardar(cliente);" ng-disabled="formulario.$invalid">Guardar</button>
-            <a href="" class="btn" ng-click="Cancelar();">Cancelar</a>
+            <button class="btn btn-primary pull-right" ng-click="Ok()">Guardar</button>
+            <a href="" class="btn" ng-click="Cancelar();">Salir</a>
         </div>
     </div>
 </div>
-

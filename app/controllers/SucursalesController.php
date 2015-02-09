@@ -4,23 +4,30 @@ class SucursalesController extends BaseController {
 
     public function getVer()
     {
-        $farmacia_id = Auth::user()->sucursal->farmacia->id;
+        $farmacia_id = Auth::user()->farmacia->id;
 
-        if ( $farmacia_id == 1) {
-            $sucursales = V_Sucursal::all();
-        }
-        else{
-            $sucursales = V_Sucursal::where('farmacia_id', $farmacia_id)->get();
-        }
+        $sucursales = V_Sucursal::where('farmacia_id', $farmacia_id)->orderBy('id','dsc')->get();
 
         return Response::json($sucursales, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
     }
 
+    public function getSucursal()
+    {
+        $sucursal_id = Auth::user()->sucursal->id;
+
+        $sucursal = V_Sucursal::where('id', $sucursal_id)->get();
+
+        return Response::json($sucursal, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
+    }
 
     public function postGuardar()
     {
         $data = Input::all();
         $data['farmacia_id'] = "2";
+
+        if (!Input::has('activa')) {
+            $data['activa'] = 0;
+        }
 
         if(Input::has('id'))
             $sucursal = Sucursal::find(Input::get('id'));
@@ -41,66 +48,6 @@ class SucursalesController extends BaseController {
     }
 
 
-   /**
-    * Display the specified resource.
-    *
-    * @param  int  $id
-    * @return Response
-    */
-   public function show($id)
-   {
-      //
-      // $sucursal = Sucursal::find($id)->get();
-      // return Response::json($sucursal, 200);
-
-    $sucursales = Sucursal::where('farmacia_id', $id)// Auth::user()->sucursal->id)
-                            ->orderBy('created_at','dsc')
-                            ->get();
-    return Response::json($sucursales, 200);
-   }
-
-
-   /**
-    * Show the form for editing the specified resource.
-    *
-    * @param  int  $id
-    * @return Response
-    */
-   public function edit($id)
-   {
-      //
-      $sucursal = Sucursal::find($id)->get();
-      return Response::json($sucursal, 200);
-   }
-
-
-   /**
-    * Update the specified resource in storage.
-    *
-    * @param  int  $id
-    * @return Response
-    */
-   public function update($id)
-   {
-        $data = Input::all();
-        $sucursal = Sucursal::find($id);
-        if($sucursal->guardar($data))
-            return Response::json($sucursal, 202);
-        $errores = [];
-        foreach ($sucursal->errores->all() as $error) {
-            $errores[] = array('type' => 'danger', 'msg' => $error);
-        }
-
-        return Response::json($errores, 200);
-   }
-
-
-   /**
-    * Remove the specified resource from storage.
-    *
-    * @param  int  $id
-    * @return Response
-    */
    public function destroy($id)
    {
         //

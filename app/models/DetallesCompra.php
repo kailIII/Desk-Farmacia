@@ -8,9 +8,9 @@ class DetallesCompra extends Eloquent {
 	protected $fillable = array(
         'cantidad',
         'precio',
-        'productos_id',
-        'compras_id',
-        'laboratorios_id'
+        'compra_id',
+        'laboratorio_id',
+        'producto_farmacia_id'
     ); 
 
 
@@ -35,10 +35,10 @@ class DetallesCompra extends Eloquent {
         {        
             $reglas = array(
                 'cantidad' => 'required',
-                'compras_id' => 'required',
-                'laboratorios_id' => 'required',
                 'precio' => 'required',
-                'productos_id' => 'required'
+                'compras_id' => 'required',
+                'laboratorio_id' => 'required',
+                'producto_farmacia_id' => 'required'
             );
             
             $validador = Validator::make($datos,$reglas);

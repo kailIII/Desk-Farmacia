@@ -53,12 +53,50 @@ class ApiController extends BaseController{
 		return Response::json($clientes, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
 	}
 
+	function getBusquedaproveedor($txt){
+
+		$proveedores = Proveedor::where('nombre','LIKE', $txt."%")->orderBy('nombre','asc') ->take(10)->get();
+
+		return Response::json($proveedores, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
+	}
+
 	function getBusquedaproducto($txt){
 
 		$sucursal = Auth::user()->sucursal->id;
 
-		$productos = V_ProductosFarmacia::where('sucursal_id', $sucursal)
+		$productos = V_ProductosSucursal::where('sucursal_id', $sucursal)
 									  ->where('nombre','LIKE', $txt."%")->orderBy('nombre','asc') ->take(10)->get();
+
+		return Response::json($productos, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
+	}
+
+	function getBusquedaps($txt){
+
+		$farmacia = Auth::user()->farmacia->id;
+
+		$productos = V_ProductosFarmacia::where('farmacia_id', $farmacia)
+									  ->where('nombre','LIKE', $txt."%")->orderBy('nombre','asc') ->take(10)->get();
+
+		return Response::json($productos, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
+	}
+
+	function getBusquedalaboratorio($txt){
+
+		$farmacia = Auth::user()->farmacia->id;
+
+		$productos = Laboratorio::where('farmacia_id', $farmacia)
+									  ->where('nombre','LIKE', $txt."%")->orderBy('nombre','asc') ->take(10)->get();
+
+		return Response::json($productos, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
+	}
+
+	function getAddproductos(){
+
+		// $farmacia = Auth::user()->farmacia->id;
+
+		// $productos = V_AddProductos::where('farmacia_id', $farmacia)->get();
+
+		$productos = V_AddProductos::all();
 
 		return Response::json($productos, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
 	}

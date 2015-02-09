@@ -4,14 +4,13 @@ class ClienteController extends BaseController {
 
 	public function getVer()
 	{
-		$farmacia_id = Auth::user()->sucursal->id;
-        
-        if ( $farmacia_id == 0) {
-            $clientes = V_Cliente::all();
+        try {
+            $farmacia_id = Auth::user()->farmacia->id;
+        } catch (Exception $e) {
+            $farmacia_id = Auth::user()->sucursal->farmacia->id;
         }
-        else{
-            $clientes = V_Cliente::where('farmacia_id', $farmacia_id)->orderBy('id','dsc')->get();
-        }
+
+        $clientes = V_Cliente::where('farmacia_id', $farmacia_id)->orderBy('id','dsc')->get();
        
         return Response::json($clientes, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
 
@@ -21,7 +20,7 @@ class ClienteController extends BaseController {
 	public function postGuardar()
 	{
         $data = Input::all();
-        $data['farmacia_id'] = Auth::user()->sucursal->farmacia->id;
+        $data['farmacia_id'] = Auth::user()->farmacia->id;
 
         if(Input::has('id'))
             $cliente = Cliente::find(Input::get('id'));

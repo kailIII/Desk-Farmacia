@@ -3,12 +3,21 @@
 class FarmaciaController extends BaseController {
 
 	public function getVer()
-	{
+    {
 
         $farmacias = V_Farmacia::orderBy('id','dsc')->get();
 
 
-       	return Response::json($farmacias, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
+        return Response::json($farmacias, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
+    }
+
+    public function getFarmacia()
+	{
+        $farmacia_id = Auth::user()->farmacia->id;
+
+        $farmacia = V_Farmacia::where('id', $farmacia_id)->get();
+
+       	return Response::json($farmacia, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
 	}
 
 
@@ -16,7 +25,7 @@ class FarmaciaController extends BaseController {
 	{
         $data = Input::all();
 
-        if (!Input::has('ativa')) {
+        if (!Input::has('activa')) {
             $data['activa'] = 0;
         }
 

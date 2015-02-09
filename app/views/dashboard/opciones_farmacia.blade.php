@@ -6,18 +6,11 @@
                 </a>
             </li>
             <!-- Productos -->
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-bar-chart-o"></i>
-                    <span>Productos</span>
-                    <i class="fa fa-angle-left pull-right"></i>
+            <li>
+                <a href="#/productos">
+                    <i class="fa fa-table"></i> <span>Productos</span>
                 </a>
-                <ul class="treeview-menu">
-                    <li><a href="#/productos"><i class="fa fa-angle-double-right"></i> Productos</a></li>
-                    <li><a href="#/categorias"><i class="fa fa-angle-double-right"></i> Categorias</a></li>
-                </ul>
             </li>
-            
             <!-- Clientes -->
             <li>
                 <a href="#/clientes">
@@ -42,12 +35,6 @@
                     <i class="fa fa-table"></i> <span>Ventas</span>
                 </a>
             </li>
-            <!-- Farmacias -->
-            <li>
-                <a href="#/farmacias">
-                    <i class="fa fa-table"></i> <span>Farmacias</span>
-                </a>
-            </li>
             <!-- Sucursales -->
             <li>
                 <a href="#/sucursales">
@@ -68,6 +55,7 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+                    <li><a href="#/farmacia"><i class="fa fa-angle-double-right"></i> Información</a></li>
                     <li><a href="#/usuarios"><i class="fa fa-angle-double-right"></i> Usuarios</a></li>
                     <li><a href="#/laboratorios"><i class="fa fa-angle-double-right"></i> Laboratorios</a></li>
                 </ul>

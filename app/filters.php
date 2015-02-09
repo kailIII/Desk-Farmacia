@@ -48,6 +48,21 @@ Route::filter('auth', function()
 	}
 });
 
+// Tipos de Usuarios
+Route::filter('is_admin', function()
+{
+    if(Auth::user()->tipo->id != 1 ) return "Sin Acceso";
+});
+Route::filter('is_farmacia', function()
+{
+    if(Auth::user()->tipo->id != 2 ) return "Sin Acceso";
+});
+Route::filter('is_sucursal', function()
+{
+    if(Auth::user()->tipo->id != 3 ) return "Sin Acceso";
+});
+// 
+
 
 Route::filter('auth.basic', function()
 {

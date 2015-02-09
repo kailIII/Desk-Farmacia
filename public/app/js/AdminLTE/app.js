@@ -12,6 +12,17 @@ $(function() {
         
     });
 
+    $(document).keydown(function(tecla){ 
+        if (tecla.keyCode == 118) { 
+            // alert("F9");
+            $('#ticket').click();
+        }else if(tecla.keyCode == 119) { 
+            $('#recibo').click();
+        }else if(tecla.keyCode == 120){ 
+            $('#factura').click();
+        } 
+    });
+
     //Enable sidebar toggle
     $("[data-toggle='offcanvas']").click(function(e) {
         e.preventDefault();

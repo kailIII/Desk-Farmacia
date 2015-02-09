@@ -6,9 +6,11 @@ class Compra extends Eloquent {
     public $errores;
     protected $softDelete = true;
 	protected $fillable = array(
-        'factura',
         'fecha',
-        'proveedores_id',
+        'factura',
+        'lote',
+        'vencimiento',
+        'proveedor_id',
         'farmacia_id'
     ); 
 
@@ -33,10 +35,12 @@ class Compra extends Eloquent {
         public function validar($datos) 
         {        
             $reglas = array(
-                'factura' => 'required',
                 'fecha' => 'required',
-                'farmacia_id' => 'required',
-                'proveedores_id' => 'required'
+                'factura' => 'required',
+                'lote' => 'required',
+                'vencimiento' => 'required',
+                'proveedor_id' => 'required',
+                'farmacia_id' => 'required'
             );
             
             $validador = Validator::make($datos,$reglas);
@@ -47,20 +51,5 @@ class Compra extends Eloquent {
             $this->errores = $validador->errors();
             return false;
         }
-
-
-    /* Relaciones */
-
-        public function proveedor() 
-        {
-            return $this->belongsTo('Proveedor');
-        }
-        public function farmacia() 
-        {
-            return $this->belongsTo('Farmacia');
-        }
-        public function detallesCompra() 
-        {
-            return $this->hasMany('DetallesCompra', 'compras_id');
-        }
+        
 }

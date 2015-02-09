@@ -12,7 +12,9 @@
         @if (Auth::user()->tipo->id == 1)
             @include("includes/librerias_angular_admin")
         @elseif(Auth::user()->tipo->id == 2)
-            @include("includes/librerias_angular")
+            @include("includes/librerias_angular_farmacia")
+        @else
+            @include("includes/librerias_angular_sucursal")
         @endif
 
        
@@ -25,7 +27,11 @@
             $usuario->nombre = $user[0]. ', '.end($user). '    ';
             $usuario->tipo = Auth::user()->tipo->definicion;
             $usuario->avatar = Auth::user()->avatar;
-            $usuario->sucursal = Auth::user()->sucursal->nombre;
+            if (Auth::user()->tipo->id <= 2) {
+                $usuario->sucursal = Auth::user()->farmacia->nombre;
+            }else{
+                $usuario->sucursal = Auth::user()->sucursal->nombre;
+            }
         ?>
         <!-- Header -->
         @include("dashboard/header")

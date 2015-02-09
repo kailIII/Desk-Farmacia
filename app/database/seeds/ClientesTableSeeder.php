@@ -15,8 +15,8 @@ public function run()
         $cliente->direccion     = $faker->address;
         $cliente->telefono      = $faker->phoneNumber;
         $cliente->email         = $faker->email;
-        $cliente->municipio_id   = $faker->numberBetween(1,100); 
-        $cliente->farmacia_id   = $faker->numberBetween(1,5); 
+        $cliente->municipio_id  = $faker->numberBetween(1,100); 
+        $cliente->farmacia_id   = "2"; 
         $cliente->save();
        
     }

@@ -35,7 +35,7 @@ class Venta extends Eloquent {
         {        
             $reglas = array(
                 'fecha'             => 'required|date',
-                'factura'           => 'required|numeric',
+                'factura'           => 'required',
                 'tipo_factura_id'   => 'required|numeric',
                 'cliente_id'        => 'required|numeric',
                 'sucursal_id'       => 'required|numeric'

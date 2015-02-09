@@ -44,16 +44,4 @@ class Laboratorio extends Eloquent {
             return false;
         }
 
-
-    /* Relaciones */
-
-        //
-        public function detallesCompra() 
-        {
-            return $this->hasMany('DetallesCompra', 'laboratorios_id');
-        }
-         public function farmacia() 
-        {
-            return $this->belongsTo('Farmacia');
-        }
 }

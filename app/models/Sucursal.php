@@ -10,6 +10,7 @@ class Sucursal extends Eloquent {
 		'direccion',
 		'telefono',
 		'email',
+        'activa',
 		'farmacia_id',
 		'municipio_id'
 		);
@@ -37,8 +38,7 @@ class Sucursal extends Eloquent {
             $reglas = array(
                 'nombre' => 'required|max:100',
                 'email' => 'email|max:100',
-                'farmacia_id' => 'required',
-                'municipio_id' => 'required'
+                'farmacia_id' => 'required'
             );
 
             $validador = Validator::make($datos,$reglas);

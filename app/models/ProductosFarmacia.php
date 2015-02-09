@@ -6,7 +6,9 @@ class ProductosFarmacia extends Eloquent {
     public $errores;
     protected $softDelete = true;
     protected $fillable = array(
-        'productos_id',
+        'cantidad',
+        'minimo',
+        'producto_id',
         'farmacia_id'
     );
 
@@ -31,7 +33,9 @@ class ProductosFarmacia extends Eloquent {
         public function validar($datos)
         {
             $reglas = array(
-                'productos_id' => 'required',
+                'cantidad' => 'required',
+                'minimo' => 'required',
+                'producto_id' => 'required',
                 'farmacia_id' => 'required'
             );
 
@@ -44,27 +48,4 @@ class ProductosFarmacia extends Eloquent {
             return false;
         }
 
-    /* Relaciones */
-
-        //
-        public function detallesCompra()
-        {
-            return $this->hasMany('DetallesCompra', 'productos_farmacia_id');
-        }
-        public function detallesVenta()
-        {
-            return $this->hasMany('DetallesVenta', 'productos_farmacia_id');
-        }
-        public function sucursal()
-        {
-            return $this->hasMany('ProductoSucursal', 'productos_farmacia_id');
-        }
-        public function farmacia()
-        {
-            return $this->belongsTo('Farmacia');
-        }
-        public function producto()
-        {
-            return $this->belongsTo('Producto');
-        }
 }

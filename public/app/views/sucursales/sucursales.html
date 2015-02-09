@@ -3,44 +3,40 @@
 <toolbar></toolbar>
 
 <div class="box-body table-responsive">
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped" ng-init="cargarDatos()">
     <thead>
       <tr>
-        <th ng-click="columna = 'farmacia'; orden=!orden">Farmacia <span class="caret pull-right"></span></th>
         <th ng-click="columna = 'nombre'; orden=!orden">Nombre <span class="caret pull-right"></span></th>
         <th ng-click="columna = 'direccion'; orden=!orden">Dirección <span class="caret pull-right"></span></th>
         <th ng-click="columna = 'telefono'; orden=!orden">Teléfono <span class="caret pull-right"></span></th>
         <th ng-click="columna = 'email'; orden=!orden">Correo <span class="caret pull-right"></span></th>
-        <th ng-click="columna = 'municipio'; orden=!orden">Municipio <span class="caret pull-right"></span></th>
         <th ng-click="columna = 'departamento'; orden=!orden">Departamento <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'municipio'; orden=!orden">Municipio <span class="caret pull-right"></span></th>
         <th class="text-center"><i class="fa fa-cog"></i></th>
       </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="sucursal in sucursales | orderBy:columna:orden  | filter:buscar">
-            <td>{{sucursal.farmacia}}</td> 
-            <td>{{sucursal.nombre}}</td> 
-            <td>{{sucursal.direccion | limitTo:20}}</td> 
-            <td>{{sucursal.telefono}}</td>
-            <td>{{sucursal.email}}</td>
-            <td>{{sucursal.municipio}}</td>
-            <td>{{sucursal.departamento}}</td>
+        <tr ng-repeat="entidad in sucursales | orderBy:columna:orden  | filter:buscar">
+            <td>{{entidad.nombre}}</td> 
+            <td>{{entidad.direccion | limitTo:20}}</td> 
+            <td>{{entidad.telefono}}</td>
+            <td>{{entidad.email}}</td>
+            <td>{{entidad.departamento}}</td>
+            <td>{{entidad.municipio}}</td>
             <td>
-              <button class="btn btn-sm" type="button" title="Ver">
-                  <i class="glyphicon glyphicon-user"></i>
-              </button>
-              <button class="btn btn-sm" type="button" title="Actualizar" ng-click="modalactualizar(sucursal)">
-                  <i class="glyphicon glyphicon-pencil"></i>
-              </button>
+              <opciones></opciones>
             </td>
         </tr>
     </tbody>
     <tfoot>
         <tr>
-            <th>Farmacia</th> <th>Nombre</th> <th>Dirección</th>
-            <th>Teléfono</th> <th>Correo</th>
-            <th>Municipio</th> <th>Departamento</th>
-            <th class="text-center"><i class="fa fa-cog"></i></th>
+          <th ng-click="columna = 'nombre'; orden=!orden">Nombre <span class="caret pull-right"></span></th>
+          <th ng-click="columna = 'direccion'; orden=!orden">Dirección <span class="caret pull-right"></span></th>
+          <th ng-click="columna = 'telefono'; orden=!orden">Teléfono <span class="caret pull-right"></span></th>
+          <th ng-click="columna = 'email'; orden=!orden">Correo <span class="caret pull-right"></span></th>
+          <th ng-click="columna = 'departamento'; orden=!orden">Departamento <span class="caret pull-right"></span></th>
+          <th ng-click="columna = 'municipio'; orden=!orden">Municipio <span class="caret pull-right"></span></th>
+          <th class="text-center"><i class="fa fa-cog"></i></th>
         </tr>
     </tfoot>
 </table>

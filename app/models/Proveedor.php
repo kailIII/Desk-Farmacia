@@ -39,11 +39,8 @@ class Proveedor extends Eloquent {
         {        
             $reglas = array(
                 'nombre' => 'required|max:100',
-                'direccion' => 'required|max:300',
-                'email' => 'email|required|max:100|unique:proveedores',
+                'email' => 'email|required|max:100',
                 'contacto' => 'required|max:100',
-                'email_contacto' => 'email|required|max:100|unique:proveedores',
-                'municipio_id' => 'required',
                 'farmacia_id' => 'required'
             );
 

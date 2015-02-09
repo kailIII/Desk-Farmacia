@@ -27,6 +27,8 @@
             @include("dashboard.opciones_admin")
         @elseif(Auth::user()->tipo->id == 2)
             @include("dashboard.opciones_farmacia")
+        @else
+            @include("dashboard.opciones_sucursal")
         @endif
 
     </section>

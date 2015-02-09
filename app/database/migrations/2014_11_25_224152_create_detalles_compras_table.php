@@ -19,7 +19,7 @@ class CreateDetallesComprasTable extends Migration {
             $table->double('precio',6,2);
             $table->integer('compra_id')->unsigned();
             $table->integer('laboratorio_id')->unsigned();
-            $table->integer('producto_sucursal_id')->unsigned();
+            $table->integer('producto_farmacia_id')->unsigned();
             
             $table->softDeletes();
             $table->timestamps();

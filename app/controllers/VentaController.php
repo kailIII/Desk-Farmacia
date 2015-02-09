@@ -6,7 +6,7 @@ class VentaController extends BaseController {
     {
         $sucursal = Auth::user()->sucursal->id;
 
-        $ventas = Venta::where('sucursal_id', $sucursal)->get();
+        $ventas = V_Venta::where('sucursal_id', $sucursal)->get();
         
         return Response::json($ventas, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
 
@@ -37,7 +37,6 @@ class VentaController extends BaseController {
                 $detalleventa->producto_sucursal_id = $detalles['producto_id'];
                 
                 $detalleventa->save();
-                $errores[] = array('type' => 'danger', 'msg' => 'agregado');
             }
             
             return Response::json($venta, 201, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
@@ -51,10 +50,14 @@ class VentaController extends BaseController {
 
     }
 
-   public function destroy($id)
-   {
-        //
-   }
+    public function getDetalles($id)
+    {
+        $detalles = V_VentaDetalles::where('venta_id', $id)->get();
+
+        return Response::json($detalles, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
+
+    }
+
 
 
 }

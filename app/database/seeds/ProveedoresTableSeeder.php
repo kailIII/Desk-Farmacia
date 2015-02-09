@@ -19,7 +19,7 @@ class ProveedoresTableSeeder extends Seeder {
             $proveedor->tel_contacto  = $faker->phoneNumber;
             $proveedor->email_contacto     = $faker->email;
             $proveedor->municipio_id   = $faker->numberBetween(1,100); 
-            $proveedor->farmacia_id   = $faker->numberBetween(1,5); 
+            $proveedor->farmacia_id   = "2"; 
             $proveedor->save();
            
         }

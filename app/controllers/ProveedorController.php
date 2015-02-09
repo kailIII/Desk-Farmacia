@@ -4,9 +4,9 @@ class ProveedorController extends BaseController {
 
 	public function getVer()
 	{
-		$farmacia_id = Auth::user()->sucursal->farmacia->id;
+		$farmacia_id = Auth::user()->farmacia->id;
 
-		$proveedores = V_Proveedor::where('farmacia_id', $farmacia_id)->get();
+		$proveedores = V_Proveedor::where('farmacia_id', $farmacia_id)->orderBy('id','dsc')->get();
 		
 		return Response::json($proveedores, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
 	}
@@ -14,7 +14,7 @@ class ProveedorController extends BaseController {
 	public function postGuardar()
 	{
         $data = Input::all();
-        $data['farmacia_id'] = Auth::user()->sucursal->farmacia->id;
+        $data['farmacia_id'] = Auth::user()->farmacia->id;
 
         if(Input::has('id'))
             $proveedor = Proveedor::find(Input::get('id'));

@@ -1,4 +1,16 @@
 <form name="form_venta" class="form-vertical" role="form" >
+
+<div class="col-xs-12" style="margin: -50px 0px">
+<a href="" class="btn btn-xs pull-right" ng-click="ver = !ver">
+    <i ng-show="ver" class="glyphicon glyphicon-chevron-right"></i>
+</a>
+
+<a href="" class="btn btn-xs pull-left" ng-click="ver = !ver">
+    <i ng-show="!ver" class="glyphicon glyphicon-chevron-left"></i>
+</a>
+</div>
+
+<div ng-show="ver">
     <div class="form-group col-sm-6">
         <label class="control-label"> Fecha:</label>
         <div class="controls">
@@ -11,15 +23,7 @@
             <input type="text" class="form-control" ng-model="venta.factura" placeholder="Factura" required />
         </div>
     </div>
-    <div class="form-group col-sm-6">
-        <label class="control-label"> Tipo:</label>
-        <div class="controls">
-            <select class="form-control"  ng-model="tipo_factura" ng-change="venta.tipo_factura_id = tipo_factura.id"
-                ng-options="opt as opt.nombre for opt in tipos" required>
-            </select>
-        </div>
-    </div>
-    <div class="form-group col-sm-6">
+    <div class="form-group col-sm-12">
         <label class="control-label"> Cliente:</label>
         <div class="controls">
             <input type="text" ng-change="buscarCliente(txtcliente);" class="form-control" ng-model="txtcliente" placeholder="Cliente" required />
@@ -31,4 +35,27 @@
             </div>
         </div>
     </div>
+    <button class="btn btn-primary btn-block" ng-show="!view" ng-click="ver = !ver"><i class="glyphicon glyphicon-ok"></i> Guardar
+    </button>
+</div>
+
+<div ng-show="!ver">
+    <div class="form-group col-sm-12">
+        <div class="controls">
+            <input type="hidden" ng-model="venta.tipo_factura_id">
+            <br>
+            <button type="button" id="ticket" class="btn btn-{{btnclass[0]}} btn-block" 
+            ng-click="venta.tipo_factura_id = 1; AddVenta(venta)">Ticket</button>
+            <br>
+            <button type="button" id="recibo" class="btn btn-{{btnclass[1]}} btn-block" 
+            ng-click="venta.tipo_factura_id = 2; AddVenta(venta)">
+            Recibo</button>
+            <br>
+            <button type="button" id="factura" class="btn btn-{{btnclass[2]}} btn-block" 
+            ng-click="venta.tipo_factura_id = 3; AddVenta(venta)">
+                Factura</button>
+        </div>
+    </div>
+</div>
+
 </form>

@@ -34,9 +34,7 @@ class Cliente extends Eloquent {
         {        
             $reglas = array(
                 'nombre' => 'required|max:100',
-                'direccion' => 'required|max:300',
                 'email' => 'email|required|max:75|unique:clientes',
-                'municipio_id' => 'required',
                 'farmacia_id' => 'required'
             );
             
