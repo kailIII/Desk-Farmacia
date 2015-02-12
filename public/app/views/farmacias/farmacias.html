@@ -3,7 +3,7 @@
 <toolbar></toolbar>
 
 <div class="box-body table-responsive">
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped" ng-init="cargarDatos();">
     <thead>
       <tr>
         <th ng-click="columna = 'nombre'; orden=!orden">Nombre <span class="caret pull-right"></span></th>

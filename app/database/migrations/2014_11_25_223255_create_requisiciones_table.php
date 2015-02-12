@@ -16,8 +16,9 @@ class CreateRequisicionesTable extends Migration {
             $table->increments('id');
                         
             $table->timestamp('fecha');
-            $table->integer('sucursal_id')->unsigned();
-			$table->integer('sucursal_2_id')->unsigned();
+            $table->enum('estado', array('1'=>'Enviado', '2'=>'En Proceso', '3'=>'Realizado'));
+            $table->integer('sucursal1_id')->unsigned();
+			$table->integer('sucursal2_id')->unsigned();
 
 			$table->softDeletes();
             $table->timestamps();

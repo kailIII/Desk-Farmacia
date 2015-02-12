@@ -1,35 +1,14 @@
 /* app css stylesheet */
 
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
-}
-
-.menu:before {
-  content: "[";
-}
-
-.menu:after {
-  content: "]";
+/* Notificaciones */
+.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a {
+	padding: 15px
 }
 
 .menu > li {
   display: inline;
+  list-style: none;
 }
-
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
-}
-
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
-}
-
-/*Validaciones*/
 
 
 /*Tablas*/
@@ -58,52 +37,102 @@
 
 /*Ventas*/
 
-.full .modal-dialog{
-    width:1000px;
-}
+	.full .modal-dialog{
+	    width:1000px;
+	}
 
-.normal .modal-dialog{
-    width:600px;
-}
+	.normal .modal-dialog{
+	    width:600px;
+	}
 
-.mini .modal-dialog{
-    width:300px;
-}
+	.mini .modal-dialog{
+	    width:300px;
+	}
 
 
-.table > thead > tr > td {
-    padding: 4px !important;
-    border-top: 0px !important;
-}
+	.table > thead > tr > td {
+	    padding: 4px !important;
+	    border-top: 0px !important;
+	}
 
-.lista-productos{
-  height:300px; 
-  overflow: auto;
-}
+	.lista-productos{
+	  height:300px; 
+	  overflow: auto;
+	}
 
-.list-group{
-  position: absolute;
-  z-index: 2;
-  width: 300px;
-}
-.list-group-item:hover{
-  cursor: pointer;
-}
+	.list-group{
+	  position: absolute;
+	  z-index: 2;
+	  width: 300px;
+	}
+	.list-group-item:hover{
+	  cursor: pointer;
+	}
 
 /*invoice*/
 
-.invoice-title h2, .invoice-title h3 {
-    display: inline-block;
-}
+	.invoice-title h2, .invoice-title h3 {
+	    display: inline-block;
+	}
 
-.table > tbody > tr > .no-line {
-    border-top: none;
-}
+	.table > tbody > tr > .no-line {
+	    border-top: none;
+	}
 
-.table > thead > tr > .no-line {
-    border-bottom: none;
-}
+	.table > thead > tr > .no-line {
+	    border-bottom: none;
+	}
 
-.table > tbody > tr > .thick-line {
-    border-top: 2px solid;
-}
+	.table > tbody > tr > .thick-line {
+	    border-top: 2px solid;
+	}
+
+/*Perfil*/
+	.nav-tabs > li {
+		float:none;
+		width: 40%;
+		display:inline-block;
+	}
+	.nav-tabs {
+	   text-align:center;
+	   margin: 15px -10px;
+	}
+
+	.avatar {
+		margin: -25px -70px 0px 0px;
+		border-radius: 50%;
+		box-shadow: 0px 0px 15px black; 
+		position: absolute;
+		height: 150px;
+		z-index: 100;
+		right: 50%;
+	}
+
+	.edit-avatar{
+		position: absolute;
+		z-index: 101;
+		border-radius: 50%;
+		padding: 7px;
+		margin: 90px -100px 0px 0px;
+		right: 50%;
+		cursor: pointer;
+		/*box-shadow: 0px 0px 15px black;*/
+	}
+
+	.perfil{
+		box-shadow: 0px 0px 15px gray;
+		margin: 10px;
+	}
+
+	.perfil .box{
+		margin-top: 130px;
+		padding: 0px 10px;
+	}
+	.perfil .box .header{
+		text-align: center;
+		margin: -10px;
+	}
+	.perfil .box .header > small{
+		font-size: 1em;-
+		color: gray;
+	}

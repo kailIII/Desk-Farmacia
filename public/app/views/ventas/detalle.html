@@ -5,9 +5,9 @@
             <input type="text" ng-change="buscarProducto(txtproducto);" class="form-control" ng-model="txtproducto" placeholder="Producto" />
             <div class="list-group">
                 <a href="" class="list-group-item" ng-repeat="result in results" ng-click="selectProducto(result)">
-                    {{result.nombre}} - {{result.tipo}} - {{result.unidades}} - {{result.unidad}}
+                    {{result.nombre}} - {{result.tipo}} - {{result.unidades}} - {{result.unidad}} = {{result.cantidad}}
                 </a>
-                <input type="hidden" ng-model="detalle.producto_id" required>
+                <input type="hidden" ng-model="detalle.producto_sucursal_id" required>
             </div>
         </div>
         <br>

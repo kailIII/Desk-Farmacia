@@ -2,12 +2,61 @@
 
 angular.module('farmaciaControllers', [])
 
-.controller('DashboardCtrl', function() {
+.controller('MainCtrl', function (Api, $scope, $log, $modal) {
+	// Manejar el titulo
+		$scope.titulo = "Dashboard";
+		$scope.header = function(l){
+			$scope.titulo = l;
+		};
+	// Buscador
+		// $scope.buscar = function(q){
+		// 	$log.info(q);
+		// };
+	// Perfil
+		$scope.usuario = {};
+ 		$scope.cargarDatos = function(usuario_id){
+ 			Api.get('usuario/'+ usuario_id).then(function(data){
+ 				$scope.usuario = data;
+	 		});
+ 		};
+		$scope.modalactualizar = function (usuario) {
+	    var modalInstance = $modal.open({
+	      	templateUrl: 'app/views/perfil/form.html',
+	      	size: 'lg',
+	     	controller:  function ($scope, $modalInstance, $modal, usuario) {
+	     		$scope.usuario = usuario;
+	     		$scope.imagenes = [{'nombre':'avatar_1.png'},{'nombre':'avatar_2.png'},{'nombre':'avatar_3.png'},{'nombre':'avatar_4.png'},{'nombre':'avatar_5.png'}];
+				$scope.select = function(img){
+					$scope.usuario.avatar = img.nombre;
+				};
+	     		$scope.Ok = function(usuario){
+	     			if (!formulario.$invalid) {
+			  			Api.post('actualizar', usuario).then(function(data){
+							$.growl("Proceso Exitoso", "success");
+							$scope.usuario = data;
+			  			},
+							function (data){
+							$.growl("Error: "+ data, "error");
+						});
+			  	 	}};
+			  	$scope.Cancelar = function () {
+				    $modalInstance.dismiss('cancelar');
+				};
+			},
+			resolve: {
+		        usuario: function () {
+		          return $scope.usuario;
+		        }
+		    }});
+		};
+
+})
+
+.controller('DashboardCtrl', function (Api, $scope, $log, $modal) {
 
 })
 
 .controller('ProductosCtrl', function (Api, $scope, $log, $modal){
-
 	$scope.productos = [];
 	$scope.producto = {};
 	$scope.alertas = [];
@@ -308,7 +357,7 @@ angular.module('farmaciaControllers', [])
 			// Buscar Producto
 			  	$scope.buscarProducto = function(txt){
 			  		$scope.results = [];
-			  		$scope.detalle.producto_id = "";
+			  		$scope.detalle.producto_sucursal_id = "";
 			  		if (txt != "") {
 			  		Api.get('busquedaps/'+ txt).then(function(data){
 			  			if (data.length > 0) {
@@ -318,7 +367,7 @@ angular.module('farmaciaControllers', [])
 			  		};
 			  	};
 			  	$scope.selectProducto = function(result){
-			  		$scope.detalle.producto_id = result.id;
+			  		$scope.detalle.producto_sucursal_id = result.id;
 			  		$scope.txtproducto = result.nombre;
 			  		$scope.detalle.producto = result.nombre;
 			  		$scope.detalle.precio = result.precio;
@@ -327,12 +376,29 @@ angular.module('farmaciaControllers', [])
 			// Agregar detalle
 			  	$scope.AddDetalle = function(detalle){
 	     			if (!form_detalle.$invalid) {
+
+	     				if (!form_detalle.$invalid) {
+	     				//Verifica si el producto ya fue ingresado para aumentar cantidad.
+	     				if ($scope.detalles.length > 0) {
+		     				for (var i = 0; i <= $scope.detalles.length - 1; i++) {
+		     					if ($scope.detalles[i].producto_sucursal_id == detalle.producto_sucursal_id) {
+		     						$scope.detalles[i].cantidad = $scope.detalles[i].cantidad + 1;
+				     			}
+				     			else{
+				     				$scope.detalles.push(detalle);
+			     				};
+		     				};
+		     			}
+		     			else{
+		     				$scope.detalles.push(detalle);
+	     				};
+	     				//Inicializar variables
 	     				$scope.total = $scope.total + (detalle.precio * detalle.cantidad);
-			  	 		$scope.detalles.push(detalle);
-			  	 		$log.info(detalle);
 			  	 		$scope.detalle = {};
-			  	 		$scope.detalle.cantidad =1;
+			  	 		$scope.detalle.laboratorio_id = detalle.laboratorio_id;
+			  	 		$scope.detalle.cantidad = 1;
 			  	 		$scope.txtproducto = "";
+			  	 		};
 			  	 	}
 			  	};
 			// Elimiar
@@ -342,19 +408,20 @@ angular.module('farmaciaControllers', [])
 			  	};
 			// Cliente
 			  	$scope.buscarCliente = function(txtcliente){
-			  		$scope.results = [];
+			  		$scope.resultsc = [];
 			  		Api.get('busquedacliente/'+ txtcliente).then(function(data){
-			  			$scope.results = data;
+			  			$scope.resultsc = data;
 			  			$scope.venta.cliente_id = "";
 			  		});
 			  	};
 			  	$scope.selectCliente = function(result){
 			  		$scope.venta.cliente_id = result.id;
 			  		$scope.txtcliente = result.nombre;
-			  		$scope.results = [];
+			  		$scope.resultsc = [];
 			  	};
 			// Guardar Venta
 			  	$scope.Ok = function(){
+			  	if ($scope.detalles.length > 0) {
 			  		$scope.ventas = [];
 			  		$scope.ventas.push($scope.venta);
 			  		var ventaTotal = $scope.ventas.concat($scope.detalles);
@@ -367,7 +434,8 @@ angular.module('farmaciaControllers', [])
   						function (data){
   							$scope.alertas = data;
   						}
-  		  			);			  	 		  				
+  		  			);
+  		  		}else{ $scope.alertas = [{'type' 	: 'warning', 'msg'	: 'No hay productos ingresados!'}]};		  	 		  				
 			  	};
 			  	$scope.Cancelar = function () {
 				    $modalInstance.close($scope.ingresados);
@@ -417,75 +485,135 @@ angular.module('farmaciaControllers', [])
 
 .controller('RequisicionesCtrl', function (Api, $scope, $modal, $log){
 	$scope.requisiciones = [];
-	$scope.alertas = []
-	$scope.requicion = {};
 
-    Api.get('requisiciones/ver').then(function(data){
-		$scope.requisiciones = data;
-	});
+	// Msjs
+	$scope.cargarMsj = function(){
+	    Api.get('requisiciones/estado/Enviado').then(function(data){
+			$scope.msjs = data;
+		});
+	};
+
+	$scope.cargarDatos = function(){
+	    Api.get('requisiciones/ver').then(function(data){
+			$scope.requisiciones = data;
+		});
+	};
 
 	$scope.modalcrear = function () {
 	    var modalInstance = $modal.open({
 	      	templateUrl: 'app/views/requisiciones/form.html',
-	      	size: 'lg',
+	      	windowClass:'normal',
+	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance) {
-	     		$scope.Ok = function(requicion){
-	     			if (!formulario.$invalid) {
-			  	 		$modalInstance.close(requicion);
-			  	 	}
+	     		var agregados = [];
+	     		var d = new Date();
+
+	     		iniciar();
+
+	     		function iniciar(){
+		     		$scope.requisicion = {};
+		     		$scope.detalles = [];
+		     		$scope.detalle = {};
+		     		$scope.detalle.cantidad = 1;
+		     		$scope.f = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+		     		$scope.ver = false;
+	     		};
+ 				
+ 				Api.get('requisiciones/sucursales').then(function(data){
+					$scope.sucursales = data;
+				});
+
+			// Agregar requisicion
+				$scope.guardarRequisicion = function(f,s){
+					$scope.requisicion.fecha = f;
+					$scope.requisicion.sucursal2_id = s.id;
+					$scope.requisicion.sucursal2 = s.nombre;
+					$scope.ver = !$scope.ver;
+					$log.info($scope.requisicion);
+				};
+
+ 			// Buscar Producto
+			  	$scope.buscarProducto = function(txt){
+			  		$scope.results = [];
+			  		$scope.detalle.producto_id = "";
+			  		if (txt != "") {
+			  		Api.get('busquedaps/'+ txt).then(function(data){
+			  			if (data.length > 0) {
+			  				$scope.results = data;
+			  			};
+			  		});
+			  		};
+			  	};
+			  	$scope.selectProducto = function(result){
+			  		$scope.detalle.producto_id = result.id;
+			  		$scope.txtproducto = result.nombre;
+			  		$scope.detalle.producto = result.nombre;
+			  		$scope.results = [];
+			  	};
+
+			// Agregar detale
+				$scope.guardarDetalle = function(detalle){
+					$scope.detalles.push(detalle);
+					$scope.detalle = {};
+					$scope.txtproducto = "";
+					$scope.detalle.cantidad = 1;
+					$scope.detalle.producto_id = "";
+				};
+
+			// Guardar
+	     		$scope.Ok = function(){
+     				$scope.requisiciones = [];
+     				$scope.requisiciones.push($scope.requisicion);
+     				var total = $scope.requisiciones.concat($scope.detalles);
+     				$log.info(total);
+		  	 		Api.post('requisiciones/guardar', total).then(function(data){
+						$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
+						agregados.push($scope.requisicion);
+						iniciar();
+		  			},
+						function (data){
+							$scope.alertas = data;
+						}
+		  			);	
 			  	};
 			  	$scope.Cancelar = function () {
-				    $modalInstance.dismiss('cancelar');
+				    $modalInstance.close(agregados);
 				};
 			}
 	    });
 
-	    modalInstance.result.then(function (requicion) {
-  			Api.post('requisiciones/guardar', requicion).then(function(data){
-				$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
-				$scope.requisiciones.push(requicion);
-				$scope.requicion = {};
-  			},
-				function (data){
-					$scope.alertas = data;
-				}
-  			);			  	 
+	    modalInstance.result.then(function (requisiciones) {
+  			for (var i = 0; i <= requisiciones.length - 1; i++) {
+	    		$scope.requisiciones.unshift(requisiciones[i]);
+	    	};	  	 
 	    });
 	};
 
-	$scope.modalactualizar = function (requicion_id) {
+	$scope.modalDetalle = function (requisicion) {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/requisiciones/form.html',
+	      	templateUrl: 'app/views/requisiciones/listarequisiciones.html',
 	      	size: 'lg',
-	     	controller:  function ($scope, $modalInstance, requicion) {
-	     		$scope.requicion = requicion;
-	     		$scope.Ok = function(requicion){
-	     			if (!formulario.$invalid) {
-			  	 		$modalInstance.close($scope.requicion);
-			  	 	}
+	     	controller:  function ($scope, $modalInstance, $log, requisicion) {
+	     		$scope.requisicion = requisicion;
+	     		$scope.detalles = [];
+	     		$scope.total = 0;
+
+     		    Api.get('requisiciones/detalles/' + requisicion.id).then(function(data){
+     				$scope.detalles = data;
+     			});
+
+	     		$scope.Cancelar = function(){
+			  	 	$modalInstance.dismiss('cancelar');
 			  	};
-			  	$scope.Cancelar = function () {
-				    $modalInstance.dismiss('cancelar');
-				};
+			  	$scope.Imprimir = function(){
+			  	 	$log.info('imprimir');
+			  	};
 			},
 			resolve: {
-		        requicion: function () {
-		          return requicion_id;
+		        requisicion: function () {
+		          return requisicion;
 		        }
 		    }
-	    });
-
-	    modalInstance.result.then(function (requicion) {
-  			Api.post('requisiciones/guardar', requicion).then(function(data){
-				$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
-				$log.info(data);
-				$scope.requicion = {};
-  			},
-				function (data){
-					$log.info(data);
-					$scope.alertas = data;
-				}
-  			);					  	 
 	    });
 	};
 })

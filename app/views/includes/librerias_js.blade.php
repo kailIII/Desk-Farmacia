@@ -6,6 +6,11 @@
 {{HTML::script('app/js/bootstrap.min.js')}}
 {{HTML::script('app/js/ui-bootstrap-0.12.0.min.js')}}
 
+<!-- Notify -->
+{{HTML::script('app/js/notify.min.js')}}
+
+
+
 <!-- Morris.js charts -->
 {{HTML::script('app/js/raphael-min.js')}}
 {{HTML::script('app/js/morris/morris.min.js')}}

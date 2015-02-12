@@ -1,6 +1,6 @@
 
 <div class="modal-header">
-    <h3 class="modal-title text-center">Compra <i class="badge"># {{ingresados.length}}</i></h3>
+    <h3 class="modal-title text-center">Compra</h3>
 </div>
 
 <div class="modal-body content">
@@ -16,8 +16,8 @@
             <div class="box-body">
                 <compra ng-show="!view"></compra>
                 <detallecompra ng-show="view"></detallecompra>
-            <div class="row">
                 <br>
+            <div class="row">
                 <div class="col-xs-12">
                     <button class="btn btn-primary btn-block" ng-show="!view" ng-click="AddCompra(compra); view = true;" ng-disabled="form_compra.$invalid"><i class="glyphicon glyphicon-ok"></i> Guardar
                     </button>

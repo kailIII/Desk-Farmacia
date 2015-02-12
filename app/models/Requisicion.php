@@ -7,8 +7,9 @@ class Requisicion extends Eloquent {
     protected $softDelete = true;
 	protected $fillable = array(
 		'fecha',
-		'sucursales_2_id',
-		'sucursales_id'
+		'estado',
+		'sucursal1_id',
+		'sucursal2_id'
 		);
 
 
@@ -20,6 +21,7 @@ class Requisicion extends Eloquent {
             {
                 $this->fill($datos);
                 $this->save();
+                return true;
             }
 
             return false;
@@ -32,8 +34,9 @@ class Requisicion extends Eloquent {
         {        
             $reglas = array(
                 'fecha' => 'required',
-                'sucursales_2_id' => 'required',
-                'sucursales_id' => 'required'
+                'estado' => 'required',
+                'sucursal1_id' => 'required|numeric',
+                'sucursal2_id' => 'required|numeric'
             );
 
             $validador = Validator::make($datos,$reglas);
@@ -43,18 +46,5 @@ class Requisicion extends Eloquent {
 
             $this->errores = $validador->errors();
             return false;
-        }
-
-
-    /* Relaciones */
-
-        //
-        public function detallesRequisicion() 
-        {
-            return $this->hasMany('DetallesRequisicion', 'requisicion_id');
-        }
-         public function sucursales() 
-        {
-            return $this->belongsTo('Sucursal');
         }
 }

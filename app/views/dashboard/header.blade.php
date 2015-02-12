@@ -1,8 +1,8 @@
-<header class="header">
+<header class="header" ng-init="cargarDatos({{Auth::user()->id}});">
     <!-- Logo -->
     <a href="#/" class="logo"> <!--Class icon to your logo image or logo icon --> {{$usuario->sucursal}} </a>
 
-    <!-- Header Navbar: style can be found in header.less -->
+    <!-- Header Navbar-->
     <nav class="navbar navbar-static-top" role="navigation">
         <!-- Sidebar toggle button-->
         <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
@@ -11,28 +11,56 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </a>
+
         <div class="navbar-right">
             <ul class="nav navbar-nav">
                 
+                @if (Auth::user()->tipo->id == 3) 
+
+                <!-- Mensajes Sucursales-->
+                <li class="dropdown notifications-menu" ng-controller="RequisicionesCtrl" ng-init="cargarMsj();">
+                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-retweet"></i>
+                        <span class="label label-warning">@{{msjs.length}}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">Tienes @{{msjs.length}} Requisiciones pendientes</li>
+                        <li>
+                            <ul class="menu">
+                                <li ng-repeat="msj in msjs">
+                                    <a href="javascript:void(0)" ng-click="modalDetalle(msj)">
+                                        <strong>@{{msj.sucursal1}}</strong> 
+                                        <br> 
+                                        Solicita <strong>@{{msj.num}}</strong> productos.
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="footer"><a href="#/requisiciones">Ver todos</a></li>
+                    </ul>
+                </li>
+
+                @endif
+
                 <!-- User Account: -->
                 <li class="dropdown user user-menu">
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="glyphicon glyphicon-user"></i>
-                        <span>{{$usuario->nombre}}<i class="caret"></i></span>
+                        <span>@{{usuario.user}}<i class="caret"></i></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header bg-light-blue">
                             <img src="app/img/avatars/{{$usuario->avatar}}" class="img-circle" alt="User Image" />
                             <p>
-                                {{$usuario->nombre}} - {{$usuario->sucursal}}
-                                <small>{{$usuario->tipo}}</small>
+                                @{{usuario.user}} - @{{usuario.sucursal}}
+                                <small>@{{usuario.tipo}}</small>
                             </p>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                                <a href="javascript:void(0)" ng-click="modalactualizar(usuario)" class="btn btn-default btn-flat">Perfil</a>
                             </div>
                             <div class="pull-right">
                                 <a href="/Desk-Farmacia/public/logout" class="btn btn-default btn-flat">Cerrar Sesión</a>

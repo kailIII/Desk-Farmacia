@@ -17,9 +17,8 @@
             @include("includes/librerias_angular_sucursal")
         @endif
 
-       
     </head>
-    <body class="skin-black">
+    <body class="skin-blue" ng-controller="MainCtrl">
         <?php 
             $usuario = new stdClass();
 
@@ -39,13 +38,12 @@
         <!-- Body -->
         <div class="wrapper row-offcanvas row-offcanvas-left">
 
-            @include("dashboard/aside_left")
-            @include("dashboard/aside_right")
+            @include("dashboard/aside")
 
         </div>
 
         <!-- JS -->
         @include("includes/librerias_js")
-
+        
     </body>
 </html>

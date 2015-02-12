@@ -28,10 +28,7 @@ class UserController extends BaseController {
         if($data['sucursal_id'] == 0)
         	$data['sucursal_id'] = "1";
 
-        if(Input::has('id'))
-            $usuario = User::find(Input::get('id'));
-        else
-            $usuario = new User;
+        $usuario = new User;
         
         if($usuario->guardar($data)){
 

@@ -19,27 +19,31 @@ class VentaController extends BaseController {
         
         $errores = [];
         $data_venta =  $data[0];
-
         $data_venta['sucursal_id'] = Auth::user()->sucursal->id;
 
         $venta = new Venta;
-        
+
+        // Guardar Venta
         if($venta->guardar($data_venta)){
             for ( $i = 1; $i < count($data) ; $i++ ) {
 
                 $detalleventa = new DetallesVenta;
 
                 $detalles =  $data[$i];
+                $detalles['venta_id'] = $venta->id;
 
-                $detalleventa->cantidad         = $detalles['cantidad'];
-                $detalleventa->precio           = $detalles['precio'];
-                $detalleventa->venta_id         = $venta->id;
-                $detalleventa->producto_sucursal_id = $detalles['producto_id'];
-                
-                $detalleventa->save();
+
+                // Guardar Detalle
+                if($detalleventa->guardar($detalles)){
+                	// Disminuir Inventario
+                	$this->inventario($detalleventa->producto_sucursal_id,$detalleventa->cantidad);
+                }
+
             }
             
-            return Response::json($venta, 201, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
+            $data_venta['id'] = $venta->id;
+            $data_venta['detalles'] = (count($data) - 1);
+            return Response::json($data_venta, 201, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
         }
 
         foreach ($venta->errores->all() as $error) {
@@ -59,5 +63,12 @@ class VentaController extends BaseController {
     }
 
 
+
+    public function inventario($id, $c)
+    {
+    	$producto = ProductosSucursal::find($id);
+    	$producto->cantidad = ($producto->cantidad - $c);
+    	$producto->save();
+    }
 
 }

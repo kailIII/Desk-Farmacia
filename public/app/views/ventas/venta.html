@@ -29,7 +29,7 @@
             <input type="text" ng-change="buscarCliente(txtcliente);" class="form-control" ng-model="txtcliente" placeholder="Cliente" required />
             <input type="hidden" ng-model="venta.cliente_id" required>
             <div class="list-group">
-                <a href="" class="list-group-item" ng-repeat="result in results" ng-click="selectCliente(result)">
+                <a href="" class="list-group-item" ng-repeat="result in resultsc" ng-click="selectCliente(result)">
                     {{result.nombre}}
                 </a>
             </div>

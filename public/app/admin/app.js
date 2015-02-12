@@ -6,11 +6,11 @@ var app = angular.module('farmacia', ['ngRoute', 'ui.bootstrap', 'farmaciaFilter
 	$routeProvider
 		.when('/',{
 			controller: 'DashboardCtrl',
-			templateUrl: 'app/views/dashboard.html'
+			templateUrl: 'app/views/dashboard_admin.html'
 		})
 		.when('/productos',{
 			controller: 'ProductosCtrl',
-			templateUrl: 'app/views/productos/productos.html'
+			templateUrl: 'app/views/productos_admin/productos.html'
 		})
 		.when('/categorias',{
 			controller: 'CategoriasCtrl',

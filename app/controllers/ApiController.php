@@ -2,6 +2,40 @@
 
 class ApiController extends BaseController{
 
+	function getUsuario($id){
+		$usuario = V_Usuario::find($id);
+		return Response::json($usuario, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
+	}
+
+
+    public function postActualizar()
+    {
+        $data = Input::all();
+
+        if (!Input::has('password'))
+        	$data['password'] = Auth::user()->password;
+        if (!Input::has('password_confirmation'))
+        	$data['password_confirmation'] = Auth::user()->password;
+
+        $usuario = User::find(Input::get('id'));
+
+        
+        if($usuario->guardar($data)){
+        	unset($data['password']);
+        	unset($data['password_confirmation']);
+            return Response::json($data, 201, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
+        }
+
+        
+        $errores = "";
+        foreach ($usuario->errores->all() as $error) {
+            $errores .= "<br>" . $error;
+        }
+
+        return Response::json($errores, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
+
+    }
+
 	function getDepartamentos(){
 		$departamentos = Departamento::all();
 		return Response::json($departamentos, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
@@ -60,21 +94,21 @@ class ApiController extends BaseController{
 		return Response::json($proveedores, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
 	}
 
-	function getBusquedaproducto($txt){
+	function getBusquedapf($txt){
 
-		$sucursal = Auth::user()->sucursal->id;
+		$farmacia = Auth::user()->farmacia->id;
 
-		$productos = V_ProductosSucursal::where('sucursal_id', $sucursal)
-									  ->where('nombre','LIKE', $txt."%")->orderBy('nombre','asc') ->take(10)->get();
+		$productos = V_ProductosFarmacia::where('farmacia_id', $farmacia)
+									  ->where('nombre','LIKE', $txt."%")->orderBy('nombre','asc')->take(10)->get();
 
 		return Response::json($productos, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
 	}
 
 	function getBusquedaps($txt){
 
-		$farmacia = Auth::user()->farmacia->id;
+		$sucursal = Auth::user()->sucursal->id;
 
-		$productos = V_ProductosFarmacia::where('farmacia_id', $farmacia)
+		$productos = V_ProductosSucursal::where('sucursal_id', $sucursal)
 									  ->where('nombre','LIKE', $txt."%")->orderBy('nombre','asc') ->take(10)->get();
 
 		return Response::json($productos, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));

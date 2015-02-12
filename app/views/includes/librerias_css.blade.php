@@ -5,6 +5,10 @@
 {{ HTML::style('app/css/font-awesome.min.css', array('media' => 'screen')) }}
 <!-- Ionicons -->
 {{ HTML::style('app/css/ionicons.min.css', array('media' => 'screen')) }}
+<!-- animate -->
+{{ HTML::style('app/css/animate.min.css', array('media' => 'screen')) }}
+
+
 <!-- Morris chart -->
 {{ HTML::style('app/css/morris/morris.css', array('media' => 'screen')) }}
 <!-- jvectormap -->

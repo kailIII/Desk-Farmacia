@@ -2,6 +2,58 @@
 
 angular.module('farmaciaControllers', [])
 
+.controller('MainCtrl', function (Api, $scope, $log, $modal) {
+	// Manejar el titulo
+		$scope.titulo = "Dashboard";
+		$scope.header = function(l){
+			$scope.titulo = l;
+		};
+	// Buscador
+		// $scope.buscar = function(q){
+		// 	$log.info(q);
+		// };
+
+		$scope.usuario = {};
+ 		
+ 		$scope.cargarDatos = function(usuario_id){
+ 			Api.get('usuario/'+ usuario_id).then(function(data){
+ 				$scope.usuario = data;
+	 		});
+ 		};
+
+
+		$scope.modalactualizar = function (usuario) {
+	    var modalInstance = $modal.open({
+	      	templateUrl: 'app/views/perfil/form.html',
+	      	size: 'lg',
+	     	controller:  function ($scope, $modalInstance, $modal, usuario) {
+	     		$scope.usuario = usuario;
+	     		$scope.imagenes = [{'nombre':'avatar_1.png'},{'nombre':'avatar_2.png'},{'nombre':'avatar_3.png'},{'nombre':'avatar_4.png'},{'nombre':'avatar_5.png'}];
+				$scope.select = function(img){
+					$scope.usuario.avatar = img.nombre;
+				};
+	     		$scope.Ok = function(usuario){
+	     			if (!formulario.$invalid) {
+			  			Api.post('actualizar', usuario).then(function(data){
+							$.growl("Proceso Exitoso", "success");
+							$scope.usuario = data;
+			  			},
+							function (data){
+						});
+			  	 	}};
+			  	$scope.Cancelar = function () {
+				    $modalInstance.dismiss('cancelar');
+				};
+			},
+			resolve: {
+		        usuario: function () {
+		          return $scope.usuario;
+		        }
+		    }});
+		};
+
+})
+
 .controller('DashboardCtrl', function() {
 
 })
@@ -373,8 +425,15 @@ angular.module('farmaciaControllers', [])
 	     			$scope.detalles = [];
 	     			$scope.detalle = {};
 		     		$scope.total = 0;
-		     		$scope.compra.fecha = Date.now();
+		     		$scope.compra.fecha = new Date(d.getFullYear(), d.getMonth(), d.getDate());
 		     		$scope.compra.vencimiento = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+		     		$scope.compra.factura = "123-321-2"; //Automatico
+		     		//Eliminar
+		     			$scope.compra.lote = "123-321-2";
+		     			$scope.txtproveedor = "jaja";
+		     			$scope.compra.proveedor_id = 1;
+		     			$scope.detalle.laboratorio_id = 1;
+		     			$scope.txtlaboratorio = "asd";
 		     		$scope.detalle.cantidad = 1;
 		     		$scope.view = false;
 		     		$scope.txtproducto = "";
@@ -420,34 +479,48 @@ angular.module('farmaciaControllers', [])
 			  	};
 			// Producto
 			  	$scope.buscarProducto = function(txt){
-			  		$scope.results = [];
+			  		$scope.resultsp = [];
 			  		if (txt != "") {
-				  		Api.get('busquedaproducto/'+ txt).then(function(data){
+				  		Api.get('busquedapf/'+ txt).then(function(data){
 				  			if (data.length > 0) {
-				  			$scope.presults = data;
+				  			$scope.resultsp = data;
 				  		};
 				  		});
 				  	}else{
-				  		$scope.detalle.producto_id = "";
+				  		$scope.detalle.producto_farmacia_id = "";
 			  		};
 			  	};
 			  	$scope.selectProducto = function(result){
-			  		$scope.detalle.producto_id = result.id;
+			  		$scope.detalle.producto_farmacia_id = result.id;
 			  		$scope.detalle.producto = result.nombre;
 			  		$scope.detalle.precio = result.precio;
 			  		$scope.txtproducto = result.nombre;
-			  		$scope.presults = [];
+			  		$scope.resultsp = [];
 			  	};
 			// Agrega Detalle
 			  	$scope.AddDetalle = function(detalle){
 	     			if (!form_detalle.$invalid) {
+	     				//Verifica si el producto ya fue ingresado para aumentar cantidad.
+	     				if ($scope.detalles.length > 0) {
+		     				for (var i = 0; i <= $scope.detalles.length - 1; i++) {
+		     					if ($scope.detalles[i].producto_farmacia_id == detalle.producto_farmacia_id) {
+		     						$scope.detalles[i].cantidad = $scope.detalles[i].cantidad + 1;
+				     			}
+				     			else{
+				     				$scope.detalles.push(detalle);
+			     				};
+		     				};
+		     			}
+		     			else{
+		     				$scope.detalles.push(detalle);
+	     				};
+	     				//Inicializar variables
 	     				$scope.total = $scope.total + (detalle.precio * detalle.cantidad);
-			  	 		$scope.detalles.push(detalle);
 			  	 		$scope.detalle = {};
 			  	 		$scope.detalle.laboratorio_id = detalle.laboratorio_id;
-			  	 		$scope.detalle.cantidad = detalle.cantidad;
+			  	 		$scope.detalle.cantidad = 1;
 			  	 		$scope.txtproducto = "";
-			  	 	}
+			  	 	};
 			  	};
 			// Elimina detalle
 			  	$scope.eliminar = function(id){
@@ -457,6 +530,7 @@ angular.module('farmaciaControllers', [])
 			// Guardar
 			  	$scope.Ok = function(){
 			  	if ($scope.detalles.length > 0) {
+			  		$scope.compras = [];
 		  	 		$scope.compras.push($scope.compra);
 			  		var compraTotal = $scope.compras.concat($scope.detalles);
   		  			Api.post('compras/guardar', compraTotal).then(function(data){
@@ -474,6 +548,7 @@ angular.module('farmaciaControllers', [])
   		  			);
   		  		}else{ $scope.alertas = [{'type' 	: 'warning', 'msg'	: 'No hay productos ingresados!'}]};		  	 		  				
 			  	};
+			// Cancelar
 			  	$scope.Cancelar = function () {
 				    $modalInstance.close($scope.ingresados);
 				};
@@ -828,8 +903,9 @@ angular.module('farmaciaControllers', [])
 	     		$scope.Ok = function(usuario){
 	     			if (!formulario.$invalid) {
 	     				$log.info(usuario);
+	     				$.notify("Guardando...", "Info");
 			  			Api.post('f_usuarios/guardar', usuario).then(function(data){
-							$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
+							$.notify("Proceso Exitoso", "success");
 							usuarios.push(usuario);
 							$scope.usuario = {};
 							$scope.sucursales = [];

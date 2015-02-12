@@ -1,0 +1,59 @@
+<div class="row" style="padding:15px;">
+<div class="col-xs-12">
+
+<!-- Compra -->
+<div class="row">
+    <div class="col-xs-12">
+		<div class="invoice-title">
+			<h2>Requisición</h2><h3 class="pull-right"># {{requisicion.id}}</h3>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-xs-6">
+				<strong>Fecha:</strong> {{requisicion.fecha}}
+			</div>
+			<div class="col-xs-6">
+				<strong>Sucursal:</strong> {{requisicion.sucursal2}}
+			</div>
+		</div>
+	</div>
+</div>
+
+<br>
+<!-- Detalle -->
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><strong>Detalle</strong></h3>
+			</div>
+			<div class="panel-body">
+				<div class="table-responsive lista-productos">
+					<table class="table table-condensed">
+						<thead>
+                            <tr>
+    							<td><strong>Nombre</strong></td>
+    							<td class="text-center"><strong>Cantidad</strong></td>
+                            </tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="entidad in detalles">
+								<td>{{entidad.nombre}}</td>
+								<td class="text-center">{{entidad.cantidad}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Botones -->
+<div class="col-xs-12">
+	<button class="btn btn-primary pull-right" ng-click="Imprimir();">Imprimir</button>
+    <a href="" class="btn" ng-click="Cancelar();">Cancelar</a>
+</div>
+
+</div>
+</div>

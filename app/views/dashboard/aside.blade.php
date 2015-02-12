@@ -1,3 +1,5 @@
+
+<!-- Izquierda -->
 <aside class="left-side sidebar-offcanvas">
     <section class="sidebar">
         
@@ -13,14 +15,16 @@
         </div>
 
         <!-- Search form -->
-       <!--  <form action="#" method="get" class="sidebar-form">
+        <form action="" method="get" class="sidebar-form">
             <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Buscar..."/>
+                <input type="text" ng-model="q" class="form-control" placeholder="Buscar..."/>
                 <span class="input-group-btn">
-                    <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                    <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="buscar(q);">
+                    	<i class="fa fa-search"></i>
+                    </button>
                 </span>
             </div>
-        </form> -->
+        </form>
 
         <!-- Sidebar Menu -->
         @if (Auth::user()->tipo->id == 1)
@@ -32,4 +36,24 @@
         @endif
 
     </section>
+</aside>
+
+<!-- Derecha -->
+<aside class="right-side">
+
+  <!-- Header -->
+  <section class="content-header">
+      <h1>
+          @{{titulo}} <small>Listado</small>
+      </h1>
+      <ol class="breadcrumb">
+          <li><a href="#/"><i class="fa fa-dashboard"></i> Inicio</a></li>
+          <li class="active">@{{titulo}}</li>
+      </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content"> 
+    <div ng-view></div>
+  </section>
 </aside>

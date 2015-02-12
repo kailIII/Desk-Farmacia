@@ -2,13 +2,13 @@
 class DetallesRequisicion extends Eloquent {
     use SoftDeletingTrait;
     
-    protected $table = 'detallesrequisicion';
+    protected $table = 'detalles_requisiciones';
     public $errores;
     protected $softDelete = true;
 	protected $fillable = array(
         'cantidad',
-        'productos_id',
-        'requesicion_id'
+        'requisicion_id',
+        'producto_sucursal_id'
     ); 
 
 
@@ -32,9 +32,9 @@ class DetallesRequisicion extends Eloquent {
         public function validar($datos) 
         {        
             $reglas = array(
+                'requisicion_id' => 'required',
                 'cantidad' => 'required',
-                'requesicion_id' => 'required',
-                'productos_id' => 'required'
+                'producto_sucursal_id' => 'required'
             );
             
             $validador = Validator::make($datos,$reglas);

@@ -19,7 +19,7 @@ class CompraController extends BaseController {
         
         $errores = [];
         $data_compra =  $data[0];
-        $data_compra['farmacia_id'] = Auth::user()->sucursal->id;
+        $data_compra['farmacia_id'] = Auth::user()->farmacia->id;
         
         $compra = new Compra;
         
@@ -29,15 +29,16 @@ class CompraController extends BaseController {
                 $detallecompra = new DetallesCompra;
 
                 $detalles =  $data[$i];
+                $detalles['compra_id'] = $compra->id;
 
-                $detallecompra->cantidad            = $detalles['cantidad'];
-                $detallecompra->precio              = $detalles['precio'];
-                $detallecompra->compra_id            = $compra->id;
-                $detallecompra->laboratorio_id      = $detalles['laboratorio_id'];
-                $detallecompra->producto_farmacia_id = $detalles['producto_id'];
-                
-                $detallecompra->save();
+ 				
+ 				// Guardar Detalle
+                if($detallecompra->guardar($detalles)){
+                	// Disminuir Inventario
+                	$this->inventario($detallecompra->producto_farmacia_id,$detallecompra->cantidad);
+                }
             }
+
             $data_compra['id'] = $compra->id;
             $data_compra['detalles'] = (count($data) - 1);
             return Response::json($data_compra, 201, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
@@ -51,13 +52,20 @@ class CompraController extends BaseController {
 
     }
 
-   public function getDetalles($id)
-   {
+   	public function getDetalles($id)
+   	{
         $detalles = V_CompraDetalles::where('compra_id', $id)->get();
 
         return Response::json($detalles, 200, array('content-type' => 'application/json', 'Access-Control-Allow-Origin' => '*'));
 
-   }
+   	}
+
+   	public function inventario($id, $c)
+    {
+    	$producto = ProductosFarmacia::find($id);
+    	$producto->cantidad = ($producto->cantidad + $c);
+    	$producto->save();
+    }
 
 
 }

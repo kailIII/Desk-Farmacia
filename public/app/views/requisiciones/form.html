@@ -1,45 +1,65 @@
 
 <div class="modal-header">
-    <h3 class="modal-title text-center">San Nicolas: Cliente</h3>
+    <h3 class="modal-title text-center">Requisicion</h3>
 </div>
 
 <div class="modal-body content">
     <div class="box">
         <div class="box-body">
-
             <alertas></alertas>
 
-            <form name="formulario" role="form" >
-                <div class="form-group">
-                    <label class="control-label" for="nombre"> Nombre:</label>
-                    <div class="controls">
-                        <input type="text" class="form-control" ng-model="cliente.nombre" placeholder="Nombre" required />
-                    </div>
+             <!-- Requisicion -->
+                <div ng-show="!ver">
+                    <form name="form" role="form" >
+                        <div class="form-group">
+                            <label class="control-label"> Fecha:</label>
+                                <input type="date" class="form-control" ng-model="f" placeholder="Fecha" required />
+                        </div>
+                        <div class="form-group" ng-show="sucursales">
+                            <label class="control-label"> Sucursal:</label>
+                            <select class="form-control"  ng-model="sucursal" ng-change="guardarRequisicion(f,sucursal);" ng-options="opt as opt.nombre for opt in sucursales"></select>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label class="control-label" for="telefono"> Teléfono:</label>
-                    <div class="controls">
-                        <input type="tel" class="form-control" ng-model="cliente.telefono" placeholder="Teléfono" required />
+
+            <!-- Detalle -->
+                <div ng-show="ver">
+
+                    <div class="form-group">
+                        <a href="" class="btn btn-xs" ng-click="ver = !ver">
+                            <i class="glyphicon glyphicon-chevron-left"></i>
+                        </a>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="direccion"> Dirección:</label>
-                    <div class="controls">
-                        <textarea class="form-control" rows="3" ng-model="cliente.direccion" placeholder="direccion" required></textarea>
+
+                    <form name="formulario" role="form" >
+                        <div class="form-group">
+                            <label class="control-label"> Producto:</label>
+                                <input type="text" ng-change="buscarProducto(txtproducto);" class="form-control" ng-model="txtproducto" placeholder="Producto" />
+                                <div class="list-group">
+                                    <a href="" class="list-group-item" ng-repeat="result in results" ng-click="selectProducto(result)">
+                                        {{result.nombre}} - {{result.tipo}} - {{result.unidades}} - {{result.unidad}}
+                                    </a>
+                                    <input type="hidden" ng-model="detalle.producto_id" required>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label"> Cantidad:</label>
+                             <input type="number" min="1" step="1" class="form-control text-center" ng-model="detalle.cantidad" placeholder="Cantidad" required/>
+                        </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" ng-click="guardarDetalle(detalle);" ng-disabled="formulario.$invalid">Agregar
+                        </button>
                     </div>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label class="control-label" for="email"> Correo:</label>
-                    <div class="controls">
-                        <input type="email" class="form-control" ng-model="cliente.email" placeholder="correo" required />
-                    </div>
-                </div>
-            </form>
+
         </div>
+        <br>
         <div class="box-footer">
-            <button class="btn btn-primary pull-right" ng-click="Guardar(cliente);" ng-disabled="formulario.$invalid">Guardar</button>
+            <button class="btn btn-primary pull-right" ng-click="Ok();">Guardar</button>
             <a href="" class="btn" ng-click="Cancelar();">Cancelar</a>
         </div>
     </div>
+
 </div>
 

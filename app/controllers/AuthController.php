@@ -21,7 +21,7 @@ class AuthController extends BaseController {
         if(Auth::attempt($datos, Input::get('remember-me')))
             return Redirect::to('/'); 
         else
-            return Redirect::to('login');
+            return Redirect::back();
     }
 
     //Log Out

@@ -36,7 +36,7 @@ class DetallesCompra extends Eloquent {
             $reglas = array(
                 'cantidad' => 'required',
                 'precio' => 'required',
-                'compras_id' => 'required',
+                'compra_id' => 'required',
                 'laboratorio_id' => 'required',
                 'producto_farmacia_id' => 'required'
             );

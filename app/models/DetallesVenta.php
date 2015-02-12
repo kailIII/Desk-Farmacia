@@ -36,7 +36,7 @@ class DetallesVenta extends Eloquent {
                 'cantidad' => 'required',
                 'precio' => 'required',
                 'producto_sucursal_id' => 'required',
-                'ventas_id' => 'required'
+                'venta_id' => 'required'
             );
             
             $validador = Validator::make($datos,$reglas);
@@ -48,15 +48,4 @@ class DetallesVenta extends Eloquent {
             return false;
         }
 
-
-    /* Relaciones */
-
-        public function venta() 
-        {
-            return $this->belongsTo('Venta');
-        }
-        public function productos() 
-        {
-            return $this->belongsTo('Productos');
-        }
 }

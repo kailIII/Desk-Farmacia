@@ -16,7 +16,7 @@ Route::group(array('before'=>'auth'), function()
         // Admin
         Route::group(['before' => 'is_admin'], function()
         {
-        //todas mis rutas que necesiten tener el permiso de admin.
+        Route::get('dashboard/admin', 'dashboardController@admin');
         Route::controller('productos', 'ProductoController');
         Route::controller('farmacias','FarmaciaController');
         Route::controller('a_usuarios','UserController');
@@ -25,6 +25,7 @@ Route::group(array('before'=>'auth'), function()
         // Farmacia
         Route::group(['before' => 'is_farmacia'], function()
         {
+        Route::get('dashboard/farmacia', 'dashboardController@farmacia');
         Route::controller('f_productos', 'FProductoController');
         Route::controller('sucursales','SucursalesController');
         Route::controller('clientes','clienteController');
@@ -33,14 +34,18 @@ Route::group(array('before'=>'auth'), function()
         Route::controller('laboratorios','LaboratorioController');
         Route::controller('f_usuarios','FUserController');
         Route::controller('ventas','VentaController');
-        Route::controller('requisiciones','RequisicionController');
+        // Route::controller('requisiciones','RequisicionController');
         });
         // Sucursal
         Route::group(['before' => 'is_sucursal'], function()
         {
+        Route::get('dashboard/farmacia', 'dashboardController@sucursal');
         Route::controller('s_usuarios','SUserController');
         Route::controller('s_productos', 'SProductoController');
+        Route::controller('clientes','clienteController');
         Route::controller('ventas','VentaController');
+        Route::controller('requisiciones','RequisicionController');
+        Route::controller('sucursales','SucursalesController');
         });
         Route::controller('','ApiController');
 

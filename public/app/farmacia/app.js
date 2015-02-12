@@ -6,7 +6,7 @@ var app = angular.module('farmacia', ['ngRoute', 'ui.bootstrap', 'farmaciaFilter
 	$routeProvider
 		.when('/',{
 			controller: 'DashboardCtrl',
-			templateUrl: 'app/views/dashboard.html'
+			templateUrl: 'app/views/dashboard_farmacia.html'
 		})
 		.when('/productos',{
 			controller: 'ProductosCtrl',

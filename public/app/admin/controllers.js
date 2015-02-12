@@ -2,7 +2,68 @@
 
 angular.module('farmaciaControllers', [])
 
-.controller('DashboardCtrl', function() {
+
+.controller('MainCtrl', function (Api, $scope, $log, $modal) {
+	// Manejar el titulo
+		$scope.titulo = "Dashboard";
+		$scope.header = function(l){
+			$scope.titulo = l;
+		};
+	// Buscador
+		// $scope.buscar = function(q){
+		// 	$log.info(q);
+		// };
+
+		$scope.usuario = {};
+ 		
+ 		$scope.cargarDatos = function(usuario_id){
+ 			Api.get('usuario/'+ usuario_id).then(function(data){
+ 				$scope.usuario = data;
+	 		});
+ 		};
+
+
+		$scope.modalactualizar = function (usuario) {
+	    var modalInstance = $modal.open({
+	      	templateUrl: 'app/views/perfil/form.html',
+	      	windowClass: 'normal',
+	      	backdrop : 'static',
+	     	controller:  function ($scope, $modalInstance, $modal, usuario) {
+	     		$scope.usuario = usuario;
+	     		$scope.imagenes = [{'nombre':'avatar_1.png'},{'nombre':'avatar_2.png'},{'nombre':'avatar_3.png'},{'nombre':'avatar_4.png'},{'nombre':'avatar_5.png'}];
+				$scope.select = function(img){
+					$scope.usuario.avatar = img.nombre;
+				};
+	     		$scope.Ok = function(usuario){
+	     			if (!formulario.$invalid) {
+	     				$.growl('Guardando...', {type: 'info'});
+			  			Api.post('actualizar', usuario).then(function(data){
+							$.growl('Proceso Exitoso', {type: 'success'});
+							$scope.usuario = data;
+			  			},
+							function (data){
+							$.growl('Error: ' + data, {type: 'warning'});
+						});
+			  	 	}};
+			  	$scope.Cancelar = function () {
+				    $modalInstance.dismiss('cancelar');
+				};
+			},
+			resolve: {
+		        usuario: function () {
+		          return $scope.usuario;
+		        }
+		    }});
+		};
+
+})
+
+.controller('DashboardCtrl', function (Api, $scope, $log) {
+	$scope.datos = {};
+
+	Api.get('dashboard/admin').then(function(data){
+		$scope.datos = data[0];
+	});
 
 })
 
@@ -21,7 +82,8 @@ angular.module('farmaciaControllers', [])
 	$scope.modalcrear = function () {
 	    var modalInstance = $modal.open({
 	      	templateUrl: 'app/views/productos_admin/form.html',
-	      	size: 'lg',
+	      	windowClass: 'normal',
+	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance, Api) {
 	     		var productos = [];
 	     		Api.get('categorias').then(function(data){
@@ -61,7 +123,8 @@ angular.module('farmaciaControllers', [])
 	$scope.modalactualizar = function (producto_id) {
 	    var modalInstance = $modal.open({
 	      	templateUrl: 'app/views/productos_admin/form.html',
-	      	size: 'lg',
+	      	windowClass: 'normal',
+	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance, producto) {
 	     		$scope.producto = producto;
 	     		Api.get('categorias').then(function(data){
@@ -181,7 +244,8 @@ angular.module('farmaciaControllers', [])
 	$scope.modalactualizar = function (farmacia_id) {
 	    var modalInstance = $modal.open({
 	      	templateUrl: 'app/views/farmacias/form.html',
-	      	size: 'lg',
+	      	windowClass: 'normal',
+	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance, farmacia, $log) {
 	     		$scope.farmacia = farmacia;
 	     		Api.get('departamentos').then(function(data){
@@ -284,7 +348,8 @@ angular.module('farmaciaControllers', [])
 	$scope.modalactualizar = function (usuario_id) {
 	    var modalInstance = $modal.open({
 	      	templateUrl: 'app/views/usuarios_admin/form.html',
-	      	size: 'lg',
+	      	windowClass: 'normal',
+	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance, usuario, $log) {
 	     		$scope.usuario = usuario;
 	     		$scope.Ok = function(usuario){
@@ -364,7 +429,8 @@ angular.module('farmaciaControllers', [])
 	$scope.modalactualizar = function (categoria_id) {
 	    var modalInstance = $modal.open({
 	      	templateUrl: 'app/views/categorias/form.html',
-	      	size: 'lg',
+	      	windowClass: 'normal',
+	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance, categoria, $log) {
 	     		$scope.categoria = categoria;
 	     		$scope.Ok = function(categoria){
