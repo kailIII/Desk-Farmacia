@@ -41,21 +41,43 @@ return function(scope, elm, attrs) {
 		templateUrl: "app/views/alertas.html"
 	}
 })
+
+// Ventas
 .directive('venta',function(){
 	return {
 		restrict: "E",
-		templateUrl: "app/views/ventas/venta.html"
+		templateUrl: "app/views/sucursal/ventas/venta.html"
 	}
 })
 .directive('detalle',function(){
 	return {
 		restrict: "E",
-		templateUrl: "app/views/ventas/detalle.html"
+		templateUrl: "app/views/sucursal/ventas/detalle.html"
 	}
 })
 .directive('factura',function(){
 	return {
 		restrict: "E",
-		templateUrl: "app/views/ventas/factura.html"
+		templateUrl: "app/views/sucursal/ventas/factura.html"
+	}
+})
+
+// Compras
+.directive('compra',function(){
+	return {
+		restrict: "E",
+		templateUrl: "app/views/farmacia/compras/compra.html"
+	}
+})
+.directive('detallecompra',function(){
+	return {
+		restrict: "E",
+		templateUrl: "app/views/farmacia/compras/detalle.html"
+	}
+})
+.directive('facturacompra',function(){
+	return {
+		restrict: "E",
+		templateUrl: "app/views/farmacia/compras/factura.html"
 	}
 });

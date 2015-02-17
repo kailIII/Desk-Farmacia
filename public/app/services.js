@@ -30,7 +30,7 @@ var url = "http://localhost:8080/Desk-Farmacia/public/api/";
 					defer.reject(data);
 			})
 			.error( function (data){
-				defer.reject([{'type':'warning', 'msg':'no hay conexión al servidor'}]);
+				$.growl('No hay conexión al servidor', {type: 'warning'});
 			})
 		return defer.promise;
 	}
@@ -39,3 +39,35 @@ var url = "http://localhost:8080/Desk-Farmacia/public/api/";
 		post	: post
 	}
 });
+
+// .factory('Library', function (Api){
+
+//     function guardar(url, data){
+// 		$.growl('Guardando...', {type: 'info'});
+// 		Api.post(url, data).then(function(data){
+// 			$.growl('Proceso Exitoso', {type: 'success'});
+// 		},
+// 			function (data){
+// 				$.growl('Error: ' + data, {type: 'warning'});
+// 			}
+// 		);
+// 		return true;
+// 	}
+// 	function eliminar(url, data){
+// 		$.growl('Eliminando...', {type: 'info'});
+// 		Api.post(url, data).then(function(data){
+// 			$.growl('Proceso Exitoso', {type: 'success'});
+// 		},
+// 			function (data){
+// 				$.growl('Error: ' + data, {type: 'warning'});
+// 			}
+// 		);
+// 		return true;
+// 	}
+
+// 	return {
+// 		guardar		: guardar,
+// 		eliminar	: eliminar
+// 	}
+
+// });

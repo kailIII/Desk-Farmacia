@@ -1,6 +1,12 @@
 <header class="header" ng-init="cargarDatos({{Auth::user()->id}});">
     <!-- Logo -->
-    <a href="#/" class="logo"> <!--Class icon to your logo image or logo icon --> {{$usuario->sucursal}} </a>
+    <a href="#/" class="logo"> <!--Class icon to your logo image or logo icon --> 
+    	@if (Auth::user()->tipo->id < 3)
+    		{{Auth::user()->farmacia->nombre}}
+    	@else
+    		{{Auth::user()->sucursal->nombre}}
+    	@endif
+    </a>
 
     <!-- Header Navbar-->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -21,7 +27,7 @@
                 <li class="dropdown notifications-menu" ng-controller="RequisicionesCtrl" ng-init="cargarMsj();">
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-retweet"></i>
-                        <span class="label label-warning">@{{msjs.length}}</span>
+                        <span class="label label-warning" ng-show="@{{msjs.length}}">@{{msjs.length}}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">Tienes @{{msjs.length}} Requisiciones pendientes</li>
@@ -41,7 +47,8 @@
                 </li>
 
                 @endif
-
+				
+				<li><a href="{{ route('lock') }}"><i class="glyphicon glyphicon-lock"></i></a></li>
                 <!-- User Account: -->
                 <li class="dropdown user user-menu">
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
@@ -51,10 +58,9 @@
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header bg-light-blue">
-                            <img src="app/img/avatars/{{$usuario->avatar}}" class="img-circle" alt="User Image" />
+                            <img ng-src="app/img/avatars/@{{usuario.avatar}}" class="img-circle" alt="User Image" />
                             <p>
-                                @{{usuario.user}} - @{{usuario.sucursal}}
-                                <small>@{{usuario.tipo}}</small>
+                                @{{usuario.user}} <small>@{{usuario.tipo}}</small>
                             </p>
                         </li>
                         <!-- Menu Footer-->
@@ -63,7 +69,7 @@
                                 <a href="javascript:void(0)" ng-click="modalactualizar(usuario)" class="btn btn-default btn-flat">Perfil</a>
                             </div>
                             <div class="pull-right">
-                                <a href="/Desk-Farmacia/public/logout" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                                <a href="{{ route('logout') }}" class="btn btn-default btn-flat">Cerrar Sesión</a>
                             </div>
                         </li>
                     </ul>

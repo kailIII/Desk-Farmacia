@@ -1,0 +1,43 @@
+CREATE VIEW
+
+v_dashboard_admin AS
+
+SELECT count(*) as productos, (SELECT count(*)-1 as farmacias FROM farmacias) as farmacias FROM productos
+
+
+CREATE VIEW
+
+v_usuarios AS
+
+SELECT u.id, u.user, u.email, u.avatar, u.activa, u.sucursal_id, s.nombre as sucursal, u.tipo_usuario_id, t.definicion as tipo, f.id as farmacia_id, f.nombre as farmacia, u.created_at, u.deleted_at, u.updated_at FROM users u
+
+INNER JOIN sucursales s ON s.id = u.sucursal_id
+
+INNER JOIN farmacias f ON f.id = s.farmacia_id
+
+INNER JOIN tipo_usuarios t ON  t.id = u.tipo_usuario_id
+
+
+CREATE VIEW
+
+v_productos AS
+
+SELECT p.id, p.nombre, p.descripcion, p.tipo,  p.unidad, p.unidades, s.id as subcategoria_id, s.nombre as subcategoria, c.id as categoria_id, c.nombre as categoria, p.created_at, p.deleted_at, p.updated_at  FROM productos p
+
+LEFT JOIN subcategorias s ON s.id = p.subcategoria_id
+
+LEFT JOIN categorias c ON c.id = s.categoria_id
+
+
+
+CREATE VIEW
+
+v_farmacias AS
+
+select f.id, f.nombre, f.direccion, f.telefono, f.web, f.email, f.activa, m.id as municipio_id, m.nombre as municipio, d.nombre as departamento, d.id as departamento_id, (select count(*) from sucursales s where f.id = s.farmacia_id) as num_sucursales, f.created_at, f.deleted_at, f.updated_at from farmacias f
+
+LEFT JOIN municipios m ON m.id = f.municipio_id
+
+LEFT JOIN departamentos d ON d.id = m.departamento_id
+
+where f.id > 1

@@ -31,4 +31,24 @@ class AuthController extends BaseController {
         return Redirect::to('/');
     }
 
+
+    //Log Out
+    public function get_lock()
+    {
+    	$email = Auth::user()->email;
+        return View::make('lock', compact('email'));
+    }
+
+    //Log Out
+    public function post_lock()
+    {
+    	$datos = Input::only('email', 'password');
+
+        if(Auth::attempt($datos, 0))
+            return Redirect::to('/'); 
+        else
+            return Redirect::back();
+    }
+
+
 }

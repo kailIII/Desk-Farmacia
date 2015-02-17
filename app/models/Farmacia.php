@@ -37,10 +37,7 @@ class Farmacia extends Eloquent {
         {        
             $reglas = array(
                 'nombre' => 'required',
-                'direccion' => 'required',
-                'activa' => 'required',
-                'email' => 'email|required|max:100',
-                'municipio_id' => 'required'
+                'email' => 'required|email'
             );
             
             $validador = Validator::make($datos,$reglas);
@@ -52,39 +49,4 @@ class Farmacia extends Eloquent {
             return false;
         }
 
-
-    /* Relaciones */
-
-        public function municipio() 
-        {
-            return $this->belongsTo('Municipios', 'municipios_id');
-        }
-        public function sucursal() 
-        {
-            return $this->belongsTo('Sucursal');
-        }
-        public function clientes() 
-        {
-            return $this->hasMany('Cliente', 'farmacia_id');
-        }
-        public function productos() 
-        {
-            return $this->hasMany('Producto', 'farmacia_id');
-        }
-        public function laboratorios() 
-        {
-            return $this->hasMany('Laboratorio', 'farmacia_id');
-        }
-        public function compras() 
-        {
-            return $this->hasMany('Compras', 'farmacia_id');
-        }
-        public function proveedores() 
-        {
-            return $this->hasMany('Proveedor', 'farmacia_id');
-        }
-        public function usuarios() 
-        {
-            return $this->hasMany('User', 'farmacia_id');
-        }
 }

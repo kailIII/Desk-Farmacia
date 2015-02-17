@@ -1,6 +1,6 @@
-/*@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic);
+/*@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic);*/
 
-@import url(http://fonts.googleapis.com/css?family=Kaushan+Script);*/
+/*@import url(http://fonts.googleapis.com/css?family=Kaushan+Script);*/
 /*! 
  *   AdminLTE v1.0
  *   Author: AlmsaeedStudio.com
@@ -27,7 +27,7 @@ a:active,
 a:focus {
   outline: none;
   text-decoration: none;
-  color: #72afd2;
+  /*color: #72afd2;*/
 }
 /* Layouts */
 .wrapper {
@@ -1016,10 +1016,10 @@ body > .header .logo .icon {
   box-shadow: none;
 }
 .form-group.has-success label {
-  color: #00a65a;
+  /*color: #00a65a;*/
 }
 .form-group.has-success .form-control {
-  border-color: #00a65a !important;
+  /*border-color: #00a65a !important;*/
   box-shadow: none;
 }
 .form-group.has-warning label {
@@ -1030,10 +1030,10 @@ body > .header .logo .icon {
   box-shadow: none;
 }
 .form-group.has-error label {
-  color: #f56954;
+  /*color: #B9210B;*/
 }
 .form-group.has-error .form-control {
-  border-color: #f56954 !important;
+  /*border-color: #f56954 !important;*/
   box-shadow: none;
 }
 /* Input group */
@@ -1315,7 +1315,7 @@ body > .header .logo .icon {
   margin: 0;
   font-size: 20px;
   font-weight: 400;
-  /*float: left;*/
+  float: left;
   cursor: default;
 }
 .box .box-header a {

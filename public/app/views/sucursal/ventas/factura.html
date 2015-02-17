@@ -1,0 +1,55 @@
+<!-- Lista -->
+
+<div class="table-responsive lista-productos">
+	<table class="table table-striped ">
+		<thead>
+            <tr>
+				<td><strong>Opciones</strong></td>
+				<td><strong>Nombre</strong></td>
+				<td class="text-center"><strong>Cantidad</strong></td>
+				<td class="text-center"><strong>Precio</strong></td>
+				<td class="text-center"><strong>Total</strong></td>
+            </tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="entidad in detalles">
+				<td>
+					<button class="btn btn-xs" type="button" title="Eliminar" ng-click="eliminar($index)">
+					    <i class="glyphicon glyphicon-trash"></i>
+					</button>
+				</td>
+				<td>{{entidad.producto}}</td>
+				<td class="text-center">{{entidad.cantidad}}</td>
+				<td class="text-centercenter">{{entidad.precio | currency }}</td>
+				<td class="text-center">{{entidad.precio * entidad.cantidad | currency }}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<!-- Totales -->
+
+<div class="factura">
+	<table class="table table-condensed">
+		<thead>
+			<tr>
+				<td></td>
+				<td></td>
+				<td class="text-right"><strong>Subtotal:</strong></td>
+				<td class="text-right">{{total - (total * 0.13) | currency}}</td>
+			</tr>
+			<tr>
+				<td ></td>
+				<td ></td>
+				<td class="text-right"><strong>Iva:</strong></td>
+				<td class="text-right">{{total * 0.13 | currency}}</td>
+			</tr>
+			<tr>
+				<td ></td>
+				<td ></td>
+				<td class="text-right"><strong>Total:</strong></td>
+				<td class="text-right"><strong>{{total | currency}}</strong></td>
+			</tr>
+		</thead>
+	</table>
+</div>

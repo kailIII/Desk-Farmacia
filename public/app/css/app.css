@@ -2,14 +2,21 @@
 
 /* Notificaciones */
 .navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a {
-	padding: 15px
+	padding: 15px !important;
 }
 
 .menu > li {
-  display: inline;
-  list-style: none;
+  display: inline !important;
+  list-style: none !important;
 }
 
+.nav-tabs.nav-justified>.active>a{
+	border-top: 3px solid #3c8dbc !important;
+}
+
+.btn-primary.active {
+	background-color: #3276b1 !important;
+}
 
 /*Tablas*/
   th{
@@ -60,11 +67,11 @@
 	  overflow: auto;
 	}
 
-	.list-group{
+	/*.list-group{
 	  position: absolute;
 	  z-index: 2;
 	  width: 300px;
-	}
+	}*/
 	.list-group-item:hover{
 	  cursor: pointer;
 	}
@@ -88,16 +95,6 @@
 	}
 
 /*Perfil*/
-	.nav-tabs > li {
-		float:none;
-		width: 40%;
-		display:inline-block;
-	}
-	.nav-tabs {
-	   text-align:center;
-	   margin: 15px -10px;
-	}
-
 	.avatar {
 		margin: -25px -70px 0px 0px;
 		border-radius: 50%;
@@ -118,21 +115,19 @@
 		cursor: pointer;
 		/*box-shadow: 0px 0px 15px black;*/
 	}
-
 	.perfil{
-		box-shadow: 0px 0px 15px gray;
-		margin: 10px;
+		padding: 10px 10px 0px 10px;
 	}
-
-	.perfil .box{
-		margin-top: 130px;
-		padding: 0px 10px;
-	}
-	.perfil .box .header{
+	.perfil .header{
+		margin-top: 140px;
 		text-align: center;
-		margin: -10px;
 	}
-	.perfil .box .header > small{
-		font-size: 1em;-
-		color: gray;
+	.perfil .header > small{
+		font-weight: bold;
+	}
+	.perfil .footer{
+		padding: 0px 25px 25px 25px;
+	}
+	.tab-pane{
+		padding: 15px;
 	}

@@ -1,0 +1,89 @@
+
+<div class="modal-header">
+    <h3 class="modal-title text-center">Farmacia Nueva</h3>
+</div>
+
+<div class="modal-body content">
+    <div class="box">
+        <div class="box-body">
+        <div class="row">
+            <alertas></alertas>
+            <form name="formulario" role="form" >
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label"> * Nombre:</label>
+                    <div class="controls">
+                        <input type="text" class="form-control" ng-model="farmacia.nombre" placeholder="Nombre" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label"> Dirección:</label>
+                    <div class="controls">
+                        <textarea class="form-control" rows="2" ng-model="farmacia.direccion" placeholder="Lugar, Calle etc."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label"> Departamento:</label>
+                    <div class="controls">
+                        <select class="form-control" ng-change="buscar_muni(dep.id); farmacia.departamento = dep.nombre" 
+                            ng-options="opt as opt.nombre for opt in departamentos" ng-model="dep">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label"> Municipio:</label>
+                    <div class="controls">
+                        <select class="form-control" ng-change="farmacia.municipio_id = muni.id; farmacia.municipio = muni.nombre"
+                            ng-options="opt as opt.nombre for opt in municipios" ng-model="muni">
+                        </select>
+                        <input type="hidden" ng-model="farmacia.municipio_id">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label"> Teléfono:</label>
+                    <div class="controls">
+                        <input type="tel" class="form-control" ng-model="farmacia.telefono" placeholder="XXXX-XXXX"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label"> * Correo:</label>
+                    <div class="controls">
+                        <input type="email" class="form-control" ng-model="farmacia.email" placeholder="ejemplo@ejemplo.com" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label"> Web:</label>
+                    <div class="controls">
+                        <input type="text" class="form-control" ng-model="farmacia.web" placeholder="www.ejemplo.com"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label"> Activa:</label>
+                    <div class="controls">
+                        <input type="checkbox" class="form-control" ng-model="farmacia.activa" ng-checked="farmacia.activa"/>
+                        <input type="hidden" ng-init="farmacia.num_sucursales = 0" />
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-primary pull-right" ng-click="Ok(farmacia);" ng-disabled="formulario.$invalid">Guardar</button>
+            <a href="" class="btn" ng-click="Cancelar();">Cancelar</a>
+        </div>
+    </div>
+</div>
+

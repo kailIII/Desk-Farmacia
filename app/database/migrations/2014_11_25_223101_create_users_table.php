@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration {
             $table->string('email', 100)->unique();
             $table->string('password',100);
             $table->string('avatar',100);
+            $table->boolean('activa');
             $table->integer('sucursal_id')->unsigned();
             $table->integer('tipo_usuario_id')->unsigned();
             

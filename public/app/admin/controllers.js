@@ -2,62 +2,6 @@
 
 angular.module('farmaciaControllers', [])
 
-
-.controller('MainCtrl', function (Api, $scope, $log, $modal) {
-	// Manejar el titulo
-		$scope.titulo = "Dashboard";
-		$scope.header = function(l){
-			$scope.titulo = l;
-		};
-	// Buscador
-		// $scope.buscar = function(q){
-		// 	$log.info(q);
-		// };
-
-		$scope.usuario = {};
- 		
- 		$scope.cargarDatos = function(usuario_id){
- 			Api.get('usuario/'+ usuario_id).then(function(data){
- 				$scope.usuario = data;
-	 		});
- 		};
-
-
-		$scope.modalactualizar = function (usuario) {
-	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/perfil/form.html',
-	      	windowClass: 'normal',
-	      	backdrop : 'static',
-	     	controller:  function ($scope, $modalInstance, $modal, usuario) {
-	     		$scope.usuario = usuario;
-	     		$scope.imagenes = [{'nombre':'avatar_1.png'},{'nombre':'avatar_2.png'},{'nombre':'avatar_3.png'},{'nombre':'avatar_4.png'},{'nombre':'avatar_5.png'}];
-				$scope.select = function(img){
-					$scope.usuario.avatar = img.nombre;
-				};
-	     		$scope.Ok = function(usuario){
-	     			if (!formulario.$invalid) {
-	     				$.growl('Guardando...', {type: 'info'});
-			  			Api.post('actualizar', usuario).then(function(data){
-							$.growl('Proceso Exitoso', {type: 'success'});
-							$scope.usuario = data;
-			  			},
-							function (data){
-							$.growl('Error: ' + data, {type: 'warning'});
-						});
-			  	 	}};
-			  	$scope.Cancelar = function () {
-				    $modalInstance.dismiss('cancelar');
-				};
-			},
-			resolve: {
-		        usuario: function () {
-		          return $scope.usuario;
-		        }
-		    }});
-		};
-
-})
-
 .controller('DashboardCtrl', function (Api, $scope, $log) {
 	$scope.datos = {};
 
@@ -67,324 +11,330 @@ angular.module('farmaciaControllers', [])
 
 })
 
-.controller('ProductosCtrl', function (Api, $scope, $log, $modal){
+.controller('ProductosCtrl', function (Api, Library, $scope, $log, $modal){
 
 	$scope.productos = [];
-	$scope.producto = {};
-	$scope.alertas = [];
 
-	$scope.cargarDatos = function () {
-    	Api.get('productos/ver').then(function(data){
-			$scope.productos = data;
-		});
-	};
+	// Cargando los productos
+		$scope.cargarDatos = function () {
+			$log.info('Cargando...');
+	    	Api.get('productos/ver').then(function(data){
+				$scope.productos = data;
+			});
+		};
 
-	$scope.modalcrear = function () {
-	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/productos_admin/form.html',
-	      	windowClass: 'normal',
-	      	backdrop : 'static',
-	     	controller:  function ($scope, $modalInstance, Api) {
-	     		var productos = [];
-	     		Api.get('categorias').then(function(data){
-	     			$scope.categorias = data;
-	     		});
-	     		$scope.buscar_subcat = function(id){
-	     			Api.get('subcategorias/'+ id).then(function(data){
-	     				$scope.subcategorias = data;
-	     			});
-	     		};
-	     		$scope.Ok = function(producto){
-	     			if (!formulario.$invalid) {
-			  			Api.post('productos/guardar', producto).then(function(data){
-							$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
-							productos.push(producto);
-							$scope.producto = {};
-			  			},
-							function (data){
-								$scope.alertas = data;
-							}
-			  			);		
-			  	 	}
-			  	};
-			  	$scope.Cancelar = function () {
-				    $modalInstance.close(productos);
-				};
+	// Muestra el formulario para crear productos.
+		$scope.modalcrear = function (productos) {
+		    var modalInstance = $modal.open({
+		      	templateUrl: 'app/views/admin/productos/form.html',
+		      	windowClass: 'normal',
+		      	backdrop : 'static',
+		     	controller:  function ($scope, $modalInstance, Library, productos) {
+		     		$scope.productos = productos;
+		     	// Cargar Categorias
+		     		Api.get('categorias').then(function(data){
+		     			$scope.categorias = data;
+		     		});
+		     	// Buscar Subcategorias
+		     		$scope.buscar_subcat = function(id){
+		     			Api.get('subcategorias/'+ id).then(function(data){
+		     				$scope.subcategorias = data;
+		     			});
+		     		};
+		     	// Guardar producto
+		     		$scope.Ok = function(producto){
+		     			if (!formulario.$invalid) {
+		     				if (Library.guardar('productos/guardar', producto))
+		     					add(producto);
+				  	 	}
+				  	};
+				// Agregamos el producto
+				  	function add(producto){
+				  		$scope.productos.unshift(producto);
+						$scope.producto = {};
+						$scope.subcat = {};
+						$scope.cat = {};
+				  	}
+				// Salir o cancelar
+				  	$scope.Cancelar = function () {
+					    $modalInstance.close();
+					};
+				},
+				resolve: {
+			        productos: function () {
+			          return $scope.productos;
+			        }
+			    }
+		    });
+		};
+	// Muestra el formulario para modificar productos.
+		$scope.modalactualizar = function (producto) {
+		    var modalInstance = $modal.open({
+		      	templateUrl: 'app/views/admin/productos_admin/form.html',
+		      	windowClass: 'normal',
+		      	backdrop : 'static',
+		     	controller:  function ($scope, $modalInstance, producto) {
+		     		$scope.producto = producto;
+		     	// Carga categorias
+		     		Api.get('categorias').then(function(data){
+		     			$scope.categorias = data;
+		     			$scope.cat = $scope.categorias[producto.categoria_id-1];
+		     		});
+		     	// Carga Subcategoria
+		     		Api.get('subcategorias/0').then(function(data){
+		     			$scope.subcategorias = data;
+		     			$scope.subcat = $scope.subcategorias[producto.subcategoria_id-1];
+		     		});
+		     	// Busca subcategoria
+		     		$scope.buscar_subcat = function(id){
+		     			Api.get('subcategorias/'+ id).then(function(data){
+		     				$scope.subcategorias = data;
+		     			});
+		     		};
+		     	// Guarda el producto
+		     		$scope.Ok = function(producto){
+		     			if (!formulario.$invalid) {
+				  	 		Library.guardar('productos/guardar', producto);
+				  	 	}
+				  	};
+				// Salir o cancelar
+				  	$scope.Cancelar = function () {
+					    $modalInstance.dismiss('cancelar');
+					};
+				},
+				resolve: {
+			        producto: function () {
+			          return producto;
+			        }
+			    }
+		    });
+		};
+	// Eliminar un producto
+		$scope.eliminar = function(producto){
+			if (confirm('¿Desea eliminar el Registro?')) {
+				if (Library.eliminar('productos/eliminar/'+ producto.id))
+					pop(producto.id);		
 			}
-	    });
-
-	    modalInstance.result.then(function (productos) {
-  			for (var i = productos.length - 1; i >= 0; i--) {
-  				$scope.productos.unshift(productos[i]);
-  			};  	 
-	    });
-	};
-
-	$scope.modalactualizar = function (producto_id) {
-	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/productos_admin/form.html',
-	      	windowClass: 'normal',
-	      	backdrop : 'static',
-	     	controller:  function ($scope, $modalInstance, producto) {
-	     		$scope.producto = producto;
-	     		Api.get('categorias').then(function(data){
-	     			$scope.categorias = data;
-	     			$scope.cat = $scope.categorias[producto.categoria_id-1];
-	     			$scope.subcategorias = [{'id':producto.subcategoria_id,'nombre':producto.subcategoria}];
-	     			$scope.subcat = $scope.subcategorias[0];
-	     		});
-	     		$scope.buscar_subcat = function(id){
-	     			Api.get('subcategorias/'+ id).then(function(data){
-	     				$scope.subcategorias = data;
-	     			});
-	     		};
-	     		$scope.Ok = function(producto){
-	     			if (!formulario.$invalid) {
-			  	 		$modalInstance.close($scope.producto);
-			  	 	}
-			  	};
-			  	$scope.Cancelar = function () {
-				    $modalInstance.dismiss('cancelar');
-				};
-			},
-			resolve: {
-		        producto: function () {
-		          return producto_id;
-		        }
-		    }
-	    });
-	    modalInstance.result.then(function (producto) {
-  			Api.post('productos/guardar', producto).then(function(data){
-				$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
-				$log.info(data);
-				$scope.producto = {};
-  			},
-				function (data){
-					$log.info(data);
-					$scope.alertas = data;
+			function pop(id){
+				for (var i in $scope.productos ) {
+					if ($scope.productos[i].id === id ){
+						$scope.productos.splice(i, 1);
+					}	
 				}
-  			);					  	 
-	    });
-	};
-
-	// $scope.eliminar = function(producto){
-	// 	if (confirm('¿Desea eliminar el Registro?')) {
-	// 		Api.post('productos/eliminar/'+ producto.id).then(function(data){
-	// 			$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
-	// 			for (var i in $scope.productos ) {
-	// 				if ($scope.productos[i].id === data.id ){
-	// 					$scope.productos.splice(i, 1);
-	// 				}
-	// 			}
- //  			},
-	// 			function (data){
-	// 				$scope.alertas = data;
-	// 			}
- //  			);
-  				
-	// 	}
-	// };
+			}
+		};
 
 })
 
-.controller('FarmaciasCtrl', function (Api, $scope, $log, $modal){
+.controller('FarmaciasCtrl', function (Api, Library, $scope, $log, $modal){
 	$scope.farmacias = [];
-	$scope.farmacia = {};
-	$scope.alertas = [];
 
-	$scope.cargarDatos = function () {
-	    Api.get('farmacias/ver').then(function(data){
-			$scope.farmacias = data;
-		});
-	};
+	// Cargar farmacias
+		$scope.cargarDatos = function () {
+			$log.info('Cargando..');
+		    Api.get('farmacias/ver').then(function(data){
+				$scope.farmacias = data;
+			});
+		};
 
-	$scope.modalcrear = function () {
-	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/farmacias/form.html',
-	      	windowClass: 'normal',
-	      	backdrop : 'static',
-	     	controller:  function ($scope, $modalInstance, Api) {
-	     		var farmacias = [];
-	     		Api.get('departamentos').then(function(data){
-	     			$scope.departamentos = data;
-	     		});
-	     		$scope.buscar_muni = function(id){
-	     			Api.get('municipios/'+ id).then(function(data){
-	     				$scope.municipios = data;
-	     			});
-	     		};
-	     		$scope.Ok = function(farmacia){
-	     			if (!formulario.$invalid) {
-			  			Api.post('farmacias/guardar', farmacia).then(function(data){
-							$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
-							farmacias.push(farmacia);
-							$scope.farmacia = {};
-							$scope.municipios = [];
-							$scope.departamentos = [];
-			  			},
-							function (data){
-								$scope.alertas = data;
-							}
-			  			);
-			  	 	}
-			  	};
-			  	$scope.Cancelar = function () {
-				   $modalInstance.close(farmacias);
-				};
+	// Muestra el formulario para crear farmacias.
+		$scope.modalcrear = function (farmacias) {
+		    var modalInstance = $modal.open({
+		      	templateUrl: 'app/views/admin/farmacias/form.html',
+		      	windowClass: 'normal',
+		      	backdrop : 'static',
+		     	controller:  function ($scope, $modalInstance, Api, Library, farmacias) {
+		     		$scope.farmacias = farmacias;
+		     		$scope.farmacia = {};
+		     		$scope.farmacia.activa = 1;
+
+		     	// Buscar departamentos
+		     		Api.get('departamentos').then(function(data){
+		     			$scope.departamentos = data;
+		     		});
+		     	// Buscar Municipios
+		     		$scope.buscar_muni = function(id){
+		     			Api.get('municipios/'+ id).then(function(data){
+		     				$scope.municipios = data;
+		     			});
+		     		};
+		     	// Guardar farmacia
+		     		$scope.Ok = function(farmacia){
+		     			if (!formulario.$invalid) {
+				  			if(Library.guardar('farmacias/guardar', farmacia))
+				  				add(farmacia);
+				  	 	}
+				  	};
+				// Agregar farmacia
+					function add(farmacia){
+						$scope.farmacias.unshift(farmacia);
+						$scope.farmacia = {};
+						$scope.municipios = [];
+						$scope.departamentos = [];
+					};
+				  	$scope.Cancelar = function () {
+					   $modalInstance.close();
+					};
+				},
+				resolve: {
+			        farmacias: function () {
+			          return $scope.farmacias;
+			        }
+			    }
+		    });
+		};
+
+	// Muestra el formulario para modificar farmacia.
+		$scope.modalactualizar = function (farmacia) {
+		    var modalInstance = $modal.open({
+		      	templateUrl: 'app/views/admin/farmacias/form.html',
+		      	windowClass: 'normal',
+		      	backdrop : 'static',
+		     	controller:  function ($scope, $modalInstance, farmacia, Library) {
+		     		$scope.farmacia = farmacia;
+		     	// Cargando departamentos
+		     		Api.get('departamentos').then(function(data){
+		     			$scope.departamentos = data;
+		     			$scope.dep = $scope.departamentos[farmacia.departamento_id-1];
+		     		});
+		     	// Cargando Municipios
+		     		Api.get('municipios/0').then(function(data){
+		     			$scope.municipios = data;
+		     			$scope.muni = $scope.municipios[farmacia.municipio_id-1];
+		     		});
+		     		$scope.buscar_muni = function(id){
+		     			Api.get('municipios/'+ id).then(function(data){
+		     				$scope.municipios = data;
+		     			});
+		     		};
+		     		$scope.Ok = function(farmacia){
+		     			if (!formulario.$invalid) {
+				  	 		Library.guardar('farmacias/guardar', farmacia);  	 					
+				  	 	}
+				  	};
+				  	$scope.Cancelar = function () {
+					    $modalInstance.dismiss('cancelar');
+					};
+				},
+				resolve: {
+			        farmacia: function () {
+			          return farmacia;
+			        }
+			    }
+		    });
+		};
+
+	// Eliminar un farmacia
+		$scope.eliminar = function(farmacia){
+			if (confirm('¿Desea eliminar el Registro?')) {
+				if (Library.eliminar('farmacias/eliminar/'+ farmacia.id))
+					pop(farmacia.id);		
 			}
-	    });
-
-	    modalInstance.result.then(function (farmacias) {
-  			for (var i = farmacias.length - 1; i >= 0; i--) {
-	    		$scope.farmacias.unshift(farmacias[i]);
-	    	};
-	    });
-	};
-
-	$scope.modalactualizar = function (farmacia_id) {
-	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/farmacias/form.html',
-	      	windowClass: 'normal',
-	      	backdrop : 'static',
-	     	controller:  function ($scope, $modalInstance, farmacia, $log) {
-	     		$scope.farmacia = farmacia;
-	     		Api.get('departamentos').then(function(data){
-	     			$scope.departamentos = data;
-	     			$scope.dep = $scope.departamentos[farmacia.departamento_id-1];
-	     			$scope.municipios = [{'id':farmacia.municipio_id,'nombre':farmacia.municipio}];
-	     			$scope.muni = $scope.municipios[0];
-	     		});
-	     		$scope.buscar_muni = function(id){
-	     			Api.get('municipios/'+ id).then(function(data){
-	     				$scope.municipios = data;
-	     			});
-	     		};
-	     		$scope.Ok = function(farmacia){
-	     			if (!formulario.$invalid) {
-			  	 		Api.post('farmacias/guardar', farmacia).then(function(data){
-  	 						$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
-  	 						$log.info(data);
-  	 						$scope.farmacia = {};
-  	 		  			},
-  	 						function (data){
-  	 							$log.info(data);
-  	 							$scope.alertas = data;
-  	 						}
-  	 		  			);	
-			  	 	}
-			  	};
-			  	$scope.Cancelar = function () {
-				    $modalInstance.dismiss('cancelar');
-				};
-			},
-			resolve: {
-		        farmacia: function () {
-		          return farmacia_id;
-		        }
-		    }
-	    });
-	};
-
+			function pop(id){
+				for (var i in $scope.farmacias ) {
+					if ($scope.farmacias[i].id === id ){
+						$scope.farmacias.splice(i, 1);
+					}	
+				}
+			}
+		};
 })
 
 .controller('UsuariosCtrl', function (Api, $scope, $log, $modal){
 	$scope.usuarios = [];
-	$scope.usuario = {};
-	$scope.alertas = [];
 
-    $scope.cargarDatos = function () {
-	    Api.get('a_usuarios/ver').then(function(data){
-			$scope.usuarios = data;
-		});
-	};
+	// Cargar usuarios
+	    $scope.cargarDatos = function () {
+	    	$log.info('Cargando..');
+		    Api.get('usuarios/ver').then(function(data){
+				$scope.usuarios = data;
+			});
+		};
 
-	$scope.modalcrear = function () {
-	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/usuarios_admin/form.html',
-	      	windowClass: 'normal',
-	      	backdrop : 'static',
-	     	controller:  function ($scope, $modalInstance,$log, Api) {
-	     		var usuarios = [];
-	     		$scope.tipos = [{'id':'1','nombre':'Admon'},{'id':'2','nombre':'Farmacia'}];
-	     		$scope.c_farmacias = function(id){
-	     			if(id==2){
-	     				Api.get('farmacias/ver').then(function(data){
-							$scope.farmacias = data;
-						});
-	     			}
-	     			else{
-	     				$scope.farmacias = [];
-	     			}
-		     		
-	     		};
-	     		$scope.Ok = function(usuario){
-	     			if (!formulario.$invalid) {
-	     				$log.info(usuario);
-			  			Api.post('a_usuarios/guardar', usuario).then(function(data){
-							$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
-							usuarios.push(usuario);
-							$scope.usuario = {};
-							$scope.farmacias = [];
-			  			},
-							function (data){
-								$scope.alertas = data;
-							}
-			  			);
-			  	 	}
-			  	};
-			  	$scope.Cancelar = function () {
-				   $modalInstance.close(usuarios);
-				};
-			}
-	    });
+	// Muestra el formulario para crear usuarios.
+		$scope.modalcrear = function (usuarios) {
+		    var modalInstance = $modal.open({
+		      	templateUrl: 'app/views/admin/usuarios/form.html',
+		      	windowClass: 'normal',
+		      	backdrop : 'static',
+		     	controller:  function ($scope, $modalInstance,$log,usuarios, Library) {
+		     		$scope.usuarios = usuarios;
+		     		$scope.usuario = {};
+		     		$scope.tipos = [{'id':'1','nombre':'Admon'},{'id':'2','nombre':'Farmacia'}];
+		     		$scope.usuario.activa = 1;
+		     	// Cargar farmacias
+		     		$scope.bfarmacias = function(id){
+		     			if(id==2){
+		     				Api.get('farmacias/ver').then(function(data){
+								$scope.farmacias = data;
+							});
+		     			} else{$scope.farmacias = [];$scope.usuario.sucursal_id="";}
+		     		};
+		     	// Guardar usuario
+		     		$scope.Ok = function(usuario){
+		     		$log.info(usuario);
+		     			if (!formulario.$invalid) {
+				  			if(Library.guardar('a_usuarios/guardar', usuario))
+				  				add(usuario);
+				  	 	}
+				  	};
+				// Agregar
+					function add(usuario){
+						$scope.usuarios.unshift(usuario);
+						$scope.usuario = {};
+						$scope.farmacias = [];
+						$scope.usuario.activa = 1;
+					};
+				  	$scope.Cancelar = function () {
+					   $modalInstance.close();
+					};
+				},
+				resolve: {
+			        usuarios: function () {
+			          return $scope.usuarios;
+			        }
+			    }
+		    });
+		};
 
-	    modalInstance.result.then(function (usuarios) {
-  			for (var i = usuarios.length - 1; i >= 0; i--) {
-	    		$scope.usuarios.unshift(usuarios[i]);
-	    	};
-	    });
-	};
+		$scope.modalactualizar = function (usuario_id) {
+		    var modalInstance = $modal.open({
+		      	templateUrl: 'app/views/admin/usuarios_admin/form_admin.html',
+		      	windowClass: 'normal',
+		      	backdrop : 'static',
+		     	controller:  function ($scope, $modalInstance, usuario, $log) {
+		     		$scope.usuario = usuario;
+		     		$scope.Ok = function(usuario){
+		     			if (!formulario.$invalid) {
+				  	 		$modalInstance.close($scope.usuario);
+				  	 	}
+				  	};
+				  	$scope.Cancelar = function () {
+					    $modalInstance.dismiss('cancelar');
+					};
+				},
+				resolve: {
+			        usuario: function () {
+			          return usuario_id;
+			        }
+			    }
+		    });
 
-	$scope.modalactualizar = function (usuario_id) {
-	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/usuarios_admin/form.html',
-	      	windowClass: 'normal',
-	      	backdrop : 'static',
-	     	controller:  function ($scope, $modalInstance, usuario, $log) {
-	     		$scope.usuario = usuario;
-	     		$scope.Ok = function(usuario){
-	     			if (!formulario.$invalid) {
-			  	 		$modalInstance.close($scope.usuario);
-			  	 	}
-			  	};
-			  	$scope.Cancelar = function () {
-				    $modalInstance.dismiss('cancelar');
-				};
-			},
-			resolve: {
-		        usuario: function () {
-		          return usuario_id;
-		        }
-		    }
-	    });
-
-	    modalInstance.result.then(function (usuario) {
-  			Api.post('usuarios/guardar', usuario).then(function(data){
-				$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
-				$scope.usuario = {};
-  			},
-				function (data){
-					$scope.alertas = data;
-				}
-  			);					  	 
-	    });
-	};
+		    modalInstance.result.then(function (usuario) {
+	  			Api.post('usuarios/guardar', usuario).then(function(data){
+					$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
+					$scope.usuario = {};
+	  			},
+					function (data){
+						$scope.alertas = data;
+					}
+	  			);					  	 
+		    });
+		};
 })
 
 .controller('CategoriasCtrl', function (Api, $scope, $log, $modal){
 	$scope.categorias = [];
-	$scope.categoria = {};
-	$scope.alertas = [];
 
 	$scope.cargarDatos = function () {
 	    Api.get('categorias/ver').then(function(data){
@@ -394,7 +344,7 @@ angular.module('farmaciaControllers', [])
 
 	$scope.modalcrear = function () {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/categorias/form.html',
+	      	templateUrl: 'app/views/admin/categorias/form.html',
 	      	windowClass: 'normal',
 	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance, Api) {
@@ -402,13 +352,14 @@ angular.module('farmaciaControllers', [])
 	     		$scope.Ok = function(categoria){
 	     			$log.info(categoria);
 	     			if (!formulario.$invalid) {
+	     				$.growl('Guardando...', {type: 'info'});
 			  			Api.post('categorias/guardar', categoria).then(function(data){
-							$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
+							$.growl('Proceso Exitoso', {type: 'success'});
 							categorias.push(categoria);
 							$scope.categoria = {};
 			  			},
 							function (data){
-								$scope.alertas = data;
+								$.growl('Error: ' + data, {type: 'warning'});
 							}
 			  			);
 			  	 	}
@@ -420,7 +371,7 @@ angular.module('farmaciaControllers', [])
 	    });
 
 	    modalInstance.result.then(function (categorias) {
-  			for (var i = categorias.length - 1; i >= 0; i--) {
+  			for (var i = 0; i <= categorias.length - 1; i++) {
 	    		$scope.categorias.unshift(categorias[i]);
 	    	};
 	    });
@@ -428,14 +379,27 @@ angular.module('farmaciaControllers', [])
 
 	$scope.modalactualizar = function (categoria_id) {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/categorias/form.html',
+	      	templateUrl: 'app/views/admin/categorias/form.html',
 	      	windowClass: 'normal',
 	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance, categoria, $log) {
 	     		$scope.categoria = categoria;
 	     		$scope.Ok = function(categoria){
 	     			if (!formulario.$invalid) {
-			  	 		$modalInstance.close($scope.categoria);
+	     				// Saber si es categoria o subcategoria
+	     				var sub = '';
+	     				if (categoria['categoria_id']) {
+	     					sub = 'sub';
+	     				}else{sub = '';};
+
+	     				$.growl('Guardando...', {type: 'info'});
+			  	 		Api.post('categorias/guardar' + sub, categoria).then(function(data){
+							$.growl('Proceso Exitoso', {type: 'success'});
+  	 		  			},
+  	 						function (data){
+								$.growl('Error: ' + data, {type: 'warning'});
+  	 						}
+  	 		  			);	
 			  	 	}
 			  	};
 			  	$scope.Cancelar = function () {
@@ -447,17 +411,6 @@ angular.module('farmaciaControllers', [])
 		          return categoria_id;
 		        }
 		    }
-	    });
-
-	    modalInstance.result.then(function (categoria) {
-  			Api.post('categorias/guardar', categoria).then(function(data){
-				$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
-				$scope.categoria = {};
-  			},
-				function (data){
-					$scope.alertas = data;
-				}
-  			);					  	 
 	    });
 	};
 

@@ -1,0 +1,53 @@
+
+<div class="modal-header">
+    <h3 class="modal-title text-center">Usuario</h3>
+</div>
+
+<div class="modal-body content">
+    <div class="box">
+        <div class="box-body">
+
+            <alertas></alertas>
+
+            <form name="formulario" role="form" >
+                <div class="form-group">
+                    <label class="control-label"> * Nombre:</label>
+                    <div class="controls">
+                        <input type="text" class="form-control" ng-model="usuario.user" placeholder="Nombre" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label"> * Correo:</label>
+                    <div class="controls">
+                        <input type="email" class="form-control" ng-model="usuario.email" placeholder="ejemplo@ejemplo.com" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label"> Activo:</label>
+                    <div class="controls">
+                        <input type="checkbox" class="form-control" ng-model="usuario.activa" ng-checked="usuario.activa"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label"> * Tipo:</label>
+                    <div class="controls">
+                        <select class="form-control"  ng-model="tipo_usuario" ng-change="bfarmacias(tipo_usuario.id); usuario.tipo_usuario_id = tipo_usuario.id" ng-options="opt as opt.nombre for opt in tipos" required>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="farmacias">
+                    <label class="control-label"> Farmacias:</label>
+                    <div class="controls">
+                        <select class="form-control"  ng-model="farmacia" ng-change="usuario.sucursal_id = farmacia.id" ng-options="opt as opt.nombre for opt in farmacias">
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-primary pull-right" ng-click="Ok(usuario);" ng-disabled="formulario.$invalid">Guardar</button>
+            <a href="" class="btn" ng-click="Cancelar();">Salir</a>
+        </div>
+    </div>
+</div>
+

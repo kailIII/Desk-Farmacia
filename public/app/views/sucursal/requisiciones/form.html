@@ -1,0 +1,65 @@
+
+<div class="modal-header">
+    <h3 class="modal-title text-center">Requisicion</h3>
+</div>
+
+<div class="modal-body content">
+    <div class="box">
+        <div class="box-body">
+            <alertas></alertas>
+
+             <!-- Requisicion -->
+                <div ng-show="!ver">
+                    <form name="form" role="form" >
+                        <div class="form-group">
+                            <label class="control-label"> Fecha:</label>
+                                <input type="date" class="form-control" ng-model="f" placeholder="Fecha" required />
+                        </div>
+                        <div class="form-group" ng-show="sucursales">
+                            <label class="control-label"> Sucursal:</label>
+                            <select class="form-control"  ng-model="sucursal" ng-change="guardarRequisicion(f,sucursal);" ng-options="opt as opt.nombre for opt in sucursales"></select>
+                        </div>
+                    </form>
+                </div>
+
+            <!-- Detalle -->
+                <div ng-show="ver">
+
+                    <div class="form-group">
+                        <a href="" class="btn btn-xs" ng-click="ver = !ver">
+                            <i class="glyphicon glyphicon-chevron-left"></i>
+                        </a>
+                    </div>
+
+                    <form name="formulario" role="form" >
+                        <div class="form-group">
+                            <label class="control-label"> Producto:</label>
+                                <input type="text" ng-change="buscarProducto(txtproducto);" class="form-control" ng-model="txtproducto" placeholder="Producto" />
+                                <div class="list-group">
+                                    <a href="" class="list-group-item" ng-repeat="result in results" ng-click="selectProducto(result)">
+                                        {{result.nombre}} - {{result.tipo}} - {{result.unidades}} - {{result.unidad}}
+                                    </a>
+                                    <input type="hidden" ng-model="detalle.producto_id" required>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label"> Cantidad:</label>
+                             <input type="number" min="1" step="1" class="form-control text-center" ng-model="detalle.cantidad" placeholder="Cantidad" required/>
+                        </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" ng-click="guardarDetalle(detalle);" ng-disabled="formulario.$invalid">Agregar
+                        </button>
+                    </div>
+                    </form>
+                </div>
+
+        </div>
+        <br>
+        <div class="box-footer">
+            <button class="btn btn-primary pull-right" ng-click="Ok();">Guardar</button>
+            <a href="" class="btn" ng-click="Cancelar();">Cancelar</a>
+        </div>
+    </div>
+
+</div>
+

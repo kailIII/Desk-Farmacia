@@ -1,8 +1,8 @@
 <ul class="sidebar-menu">
     <!-- Dashboar -->
     <li class="active">
-        <a href="#/">
-            <i class="fa fa-dashboard" ng-click="titulo='Dashboard'"></i> <span>Dashboard</span>
+        <a href="#/" ng-click="titulo='Dashboard'">
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
     </li>
     <!-- Productos -->
@@ -20,8 +20,8 @@
     
     <!-- Farmacias -->
     <li>
-        <a href="#/farmacias">
-            <i class="fa fa-table" ng-click="titulo='Farmacias'"></i> <span>Farmacias</span>
+        <a href="#/farmacias" ng-click="titulo='Farmacias'">
+            <i class="fa fa-table"></i> <span>Farmacias</span>
         </a>
     </li>
     <!-- Admon -->

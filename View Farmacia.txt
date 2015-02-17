@@ -1,0 +1,145 @@
+CREATE VIEW
+
+v_productos_farmacia AS
+
+SELECT pf.id, p.nombre, p.descripcion, p.unidad, p.unidades, p.tipo, sc.nombre as subcategoria, 
+c.nombre as categoria, f.id as farmacia_id, f.nombre as farmacia, pf.cantidad, pf.minimo, pf.precio, cp.vencimiento, cp.lote, pf.created_at, pf.deleted_at, pf.updated_at FROM productos_farmacias as pf
+
+INNER JOIN productos p ON p.id = pf.producto_id
+
+INNER JOIN subcategorias sc ON sc.id = p.subcategoria_id
+
+INNER JOIN categorias c ON c.id = sc.categoria_id
+
+INNER JOIN farmacias as f on f.id = pf.farmacia_id
+
+LEFT JOIN detalles_compras cd ON cd.producto_farmacia_id = pf.id
+
+LEFT JOIN compras cp ON cp.id = cd.compra_id
+
+
+
+CREATE VIEW
+
+v_add_productos AS
+
+SELECT p.id, p.nombre, p.descripcion, p.tipo,  p.unidad, p.unidades, s.id as subcategoria_id, s.nombre 
+
+as subcategoria, c.id as categoria_id, c.nombre as categoria FROM productos p
+
+INNER JOIN subcategorias s ON s.id = p.subcategoria_id
+
+INNER JOIN categorias c ON c.id = s.categoria_id
+
+WHERE p.id NOT IN (SELECT producto_id FROM productos_farmacias)
+
+
+
+CREATE VIEW
+
+v_clientes AS
+
+SELECT c.id, c.nombre, c.direccion, c.telefono, c.email, c.municipio_id, c.farmacia_id, m.nombre as municipio, d.id as departamento_id, d.nombre as departamento, c.created_at, c.deleted_at, c.updated_at FROM clientes c
+
+LEFT JOIN municipios m ON m.id = c.municipio_id
+
+LEFT JOIN departamentos d ON d.id = m.departamento_id
+
+
+CREATE VIEW
+
+v_proveedores AS
+
+SELECT p.id, p.nombre, p.direccion, p.telefono, p.email, p.contacto, p.tel_contacto, p.email_contacto, p.municipio_id, p.farmacia_id, m.nombre as municipio, d.id as departamento_id, d.nombre as departamento, p.created_at, p.deleted_at, p.updated_at FROM proveedores p
+
+LEFT JOIN municipios m ON m.id = p.municipio_id
+
+LEFT JOIN departamentos d ON d.id = m.departamento_id
+
+
+CREATE VIEW
+
+v_compras AS
+
+SELECT c.id, c.fecha, c.factura, c.lote, c.vencimiento, c.farmacia_id, p.id as proveedor_id, p.nombre as proveedor, (select count(*) from detalles_compras d where d.compra_id = c.id) as detalles, c.created_at, c.deleted_at, c.updated_at FROM compras c
+
+INNER JOIN proveedores p ON p.id = c.proveedor_id
+
+
+CREATE VIEW
+
+v_compra_detalles AS
+
+SELECT d.cantidad, d.precio, d.compra_id, d.laboratorio_id, l.nombre as laboratorio, d.producto_farmacia_id, p.nombre as producto, d.created_at, d.deleted_at, d.updated_at  FROM detalles_compras d
+
+INNER JOIN laboratorios l ON l.id = d.laboratorio_id
+
+INNER JOIN productos_farmacias pf ON pf.id = d.producto_farmacia_id
+
+INNER JOIN productos p ON p.id = pf.producto_id
+
+
+
+CREATE VIEW
+
+v_ventas AS
+
+SELECT v.id, v.fecha, v.factura, t.nombre, c.nombre as cliente, v.sucursal_id, s.nombre as sucursal, f.id as farmacia_id, f.nombre as farmacia, (select count(*) from detalles_ventas d where d.venta_id = v.id), v.created_at, v.deleted_at, v.updated_at FROM ventas v
+
+INNER JOIN sucursales s ON s.id = v.sucursal_id
+
+INNER JOIN farmacias f ON f.id = s.farmacia_id
+
+INNER JOIN tipos_factura t ON t.id = v.tipo_factura_id
+
+INNER JOIN clientes c ON c.id = v.cliente_id
+
+
+CREATE VIEW
+
+v_venta_detalles AS
+
+SELECT d.cantidad, d.precio, d.venta_id, d.producto_sucursal_id, p.nombre as producto, d.created_at, d.deleted_at, d.updated_at FROM detalles_ventas d
+
+INNER JOIN productos_farmacias pf ON pf.id = d.producto_sucursal_id
+
+INNER JOIN productos p ON p.id = pf.producto_id
+
+
+CREATE VIEW
+
+v_sucursales AS
+
+select s.id, s.nombre, s.direccion, s.telefono, s.email, s.farmacia_id, s.activa, f.nombre as farmacia, s.municipio_id, m.nombre as municipio, d.nombre as departamento, d.id as departamento_id, s.created_at, s.deleted_at, s.updated_at from sucursales s
+
+INNER JOIN farmacias f ON f.id = s.farmacia_id
+
+LEFT JOIN municipios m ON m.id = s.municipio_id
+
+LEFT JOIN departamentos d ON d.id = m.departamento_id
+
+
+CREATE VIEW
+
+v_requisiciones as
+
+SELECT r.id, r.fecha, r.sucursal1_id, s1.nombre as sucursal1, r.sucursal2_id, s2.nombre as sucursal2, r.estado, f.id as farmacia_id, f.nombre as farmacia, (SELECT count(id) FROM detalles_requisiciones d where d.requisicion_id = r.id) as num, r.created_at, r.deleted_at, r.updated_at FROM requisiciones r
+
+INNER JOIN sucursales s1 ON s1.id = r.sucursal1_id
+
+INNER JOIN sucursales s2 ON s2.id = r.sucursal2_id
+
+INNER JOIN farmacias f ON f.id = s1.farmacia_id
+
+
+CREATE VIEW
+
+v_requisicion_detalles as
+
+SELECT dr.id, dr.cantidad, dr.requisicion_id, p.nombre, dr.created_at, dr.deleted_at, dr.updated_at FROM detalles_requisiciones dr
+
+INNER JOIN productos_sucursales ps ON ps.id = dr.producto_sucursal_id
+
+INNER JOIN productos_farmacias pf ON pf.id = ps.producto_farmacia_id
+
+INNER JOIN productos p ON p.id = pf.producto_id

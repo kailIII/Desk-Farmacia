@@ -8,10 +8,7 @@
 $(function() {
     "use strict";
 
-    $(window).load(function(){
-        
-    });
-
+// Atajos de teclado
     $(document).keydown(function(tecla){ 
         if (tecla.keyCode == 118) { 
             // alert("F9");
@@ -23,7 +20,7 @@ $(function() {
         } 
     });
 
-    // Mensajes Growl
+// Mensajes Growl
 	 //    $.growl(false, {
 		// 	animate: {
 		// 		enter: 'animated flipInY',
@@ -41,7 +38,7 @@ $(function() {
 		// 	mouse_over: false,						
 		// });
 
-    //Enable sidebar toggle
+//Enable sidebar toggle
     $("[data-toggle='offcanvas']").click(function(e) {
         e.preventDefault();
 
@@ -58,19 +55,18 @@ $(function() {
         }
     });
 
-    //Add hover support for touch devices
+//Add hover support for touch devices
     $('.btn').bind('touchstart', function() {
         $(this).addClass('hover');
     }).bind('touchend', function() {
         $(this).removeClass('hover');
     });
 
-    //Activate tooltips
+//Activate tooltips
     $("[data-toggle='tooltip']").tooltip();
 
-    /*     
-     * Add collapse and remove events to boxes
-     */
+// Add collapse and remove events to boxes
+
     $("[data-widget='collapse']").click(function() {
         //Find the box parent        
         var box = $(this).parents(".box").first();
@@ -85,20 +81,16 @@ $(function() {
         }
     });
 
-    /*
-     * ADD SLIMSCROLL TO THE TOP NAV DROPDOWNS
-     * ---------------------------------------
-     */
+// ADD SLIMSCROLL TO THE TOP NAV DROPDOWNS
+
     $(".navbar .menu").slimscroll({
         height: "200px",
         alwaysVisible: false,
         size: "3px"
     }).css("width","100%");
 
-    /*
-     * INITIALIZE BUTTON TOGGLE
-     * ------------------------
-     */
+// INITIALIZE BUTTON TOGGLE
+
     $('.btn-group[data-toggle="btn-toggle"]').each(function() {
         var group = $(this);
         $(this).find(".btn").click(function(e) {
@@ -115,16 +107,11 @@ $(function() {
         box.slideUp();
     });
 
-    /* Sidebar tree view */
+// Sidebar tree view
     $(".sidebar .treeview").tree();
 
-    /* 
-     * Make sure that the sidebar is streched full height
-     * ---------------------------------------------
-     * We are gonna assign a min-height value every time the
-     * wrapper gets resized and upon page load. We will use
-     * Ben Alman's method for detecting the resize event.
-     **/
+// Make sure that the sidebar is streched full height
+
     //alert($(window).height());
     function _fix() {
         //Get window height and the wrapper height
@@ -147,17 +134,15 @@ $(function() {
         _fix();
     });
 
-    /*
-     * We are gonna initialize all checkbox and radio inputs to 
-     * iCheck plugin in.
-     * You can find the documentation at http://fronteed.com/iCheck/
-     */
+// We are gonna initialize all checkbox and radio inputs to
+
     $("input[type='checkbox'], input[type='radio']").iCheck({
         checkboxClass: 'icheckbox_minimal',
         radioClass: 'iradio_minimal'
     });
 
-    /* For demo purposes */
+// Layout
+
     var demo = $("<div />").css({
         position: "fixed",
         top: "150px",
@@ -227,14 +212,15 @@ $(function() {
 
     $("body").append(demo);
     $("body").append(demo_settings);
-});
-function change_layout() {
-    $("body").toggleClass("fixed");
-}
-function change_skin(cls) {
-    $("body").removeClass("skin-blue skin-black");
-    $("body").addClass(cls);
-}
+	});
+	function change_layout() {
+	    $("body").toggleClass("fixed");
+	}
+	function change_skin(cls) {
+	    $("body").removeClass("skin-blue skin-black");
+	    $("body").addClass(cls);
+	}
+
 /*END DEMO*/
 $(window).load(function(){
 /*! pace 0.4.17 */

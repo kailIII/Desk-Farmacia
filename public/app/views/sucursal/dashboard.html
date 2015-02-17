@@ -1,0 +1,40 @@
+<!-- Cajas -->
+	<div class="row">
+	    <div class="col-lg-3 col-xs-6"  ng-repeat="caja in cajas">
+	        <!-- small box -->
+	        <div class="small-box {{caja.clase}}">
+	            <div class="inner">
+	                <h3>
+	                    {{caja.valor}}
+	                </h3>
+	                <p>
+	                    {{caja.nombre}}
+	                </p>
+	            </div>
+	            <div class="icon">
+	                <i class="ion {{caja.icono}}"></i>
+	            </div>
+	            <a href="#/{{caja.url}}" class="small-box-footer">
+	                Mas información <i class="fa fa-arrow-circle-right"></i>
+	            </a>
+	        </div>
+	    </div>
+	</div>
+
+<!-- Graficos -->
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box box-warning">
+	            <div class="box-header">
+	                <i class="fa fa-calendar"></i>
+	                <div class="box-title">Ventas</div>
+				</div>
+				<div bar-chart bar-data='barventas' bar-x='y'bar-y='["a", "b"]'bar-labels='["Series A", "Series B"]'></div>
+			</div>
+		</div>
+	</div>
+
+<div class="row">
+
+
+</div>

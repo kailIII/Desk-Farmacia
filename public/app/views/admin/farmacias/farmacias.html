@@ -1,0 +1,51 @@
+<div class="box">
+
+<toolbar></toolbar>
+
+<div class="box-body table-responsive">
+<table class="table table-bordered table-striped" ng-init="cargarDatos();">
+    <thead>
+      <tr>
+        <th ng-click="columna = 'nombre'; orden=!orden">Nombre <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'direccion'; orden=!orden">Dirección <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'telefono'; orden=!orden">Teléfono <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'web'; orden=!orden">Web <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'email'; orden=!orden">Correo <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'departamento'; orden=!orden">Departamento <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'municipio'; orden=!orden">Municipio <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'num_sucursales'; orden=!orden">Sucursales <span class="caret pull-right"></span></th>
+        <th class="text-center"><i class="fa fa-cog"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="entidad in farmacias | orderBy:columna:orden  | filter:buscar">
+            <td>{{entidad.nombre}}</td> 
+            <td>{{entidad.direccion | limitTo:20}}</td> 
+            <td>{{entidad.telefono}}</td>
+            <td>{{entidad.web}}</td>
+            <td>{{entidad.email}}</td>
+            <td>{{entidad.departamento}}</td>
+            <td>{{entidad.municipio}}</td>
+            <td class="text-center">{{entidad.num_sucursales}}</td>
+            <td class="text-center">
+              <opciones></opciones>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th ng-click="columna = 'nombre'; orden=!orden">Nombre <span class="caret pull-right"></span></th>
+            <th ng-click="columna = 'direccion'; orden=!orden">Dirección <span class="caret pull-right"></span></th>
+            <th ng-click="columna = 'telefono'; orden=!orden">Teléfono <span class="caret pull-right"></span></th>
+            <th ng-click="columna = 'web'; orden=!orden">Web <span class="caret pull-right"></span></th>
+            <th ng-click="columna = 'email'; orden=!orden">Correo <span class="caret pull-right"></span></th>
+            <th ng-click="columna = 'departamento'; orden=!orden">Departamento <span class="caret pull-right"></span></th>
+            <th ng-click="columna = 'municipio'; orden=!orden">Municipio <span class="caret pull-right"></span></th>
+            <th ng-click="columna = 'num_sucursales'; orden=!orden">Sucursales <span class="caret pull-right"></span></th>
+            <th class="text-center"><i class="fa fa-cog"></i></th>
+        </tr>
+    </tfoot>
+</table>
+</div>
+</div>
+

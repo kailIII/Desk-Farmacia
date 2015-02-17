@@ -14,6 +14,9 @@
 		"classmap": [
 			"app/commands",
 			"app/controllers",
+			"app/controllers/admin",
+			"app/controllers/farmacia",
+			"app/controllers/sucursal",
 			"app/models",
 			"app/models/vistas",
 			"app/database/migrations",

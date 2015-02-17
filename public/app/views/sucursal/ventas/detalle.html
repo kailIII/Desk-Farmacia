@@ -1,0 +1,21 @@
+<form name="form_detalle" class="form-vertical" role="form" >
+    <div class="col-sm-12">
+        <label class="control-label"> Producto:</label>
+        <div class="controls">
+            <input type="text" ng-change="buscarProducto(txtproducto);" class="form-control" ng-model="txtproducto" placeholder="Producto" />
+            <div class="list-group">
+                <a href="" class="list-group-item" ng-repeat="result in results" ng-click="selectProducto(result)">
+                    {{result.nombre}} - {{result.tipo}} - {{result.unidades}} - {{result.unidad}} = {{result.cantidad}}
+                </a>
+                <input type="hidden" ng-model="detalle.producto_sucursal_id" required>
+            </div>
+        </div>
+        <br>
+    </div>
+    <div class="form-group left col-sm-6 col-sm-offset-3">
+        <label class="control-label"> Cantidad:</label>
+        <div class="controls text-center">
+            <input type="number" min="1" step="1" class="form-control text-center" ng-model="detalle.cantidad" placeholder="Cantidad" required/>
+        </div>
+    </div>
+</form>

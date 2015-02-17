@@ -1,0 +1,43 @@
+<div class="box">
+
+<toolbar></toolbar>
+
+<div class="box-body table-responsive">
+<table class="table table-bordered" ng-init="cargarDatos();">
+    <thead>
+      <tr>
+        <th ng-click="columna = 'nombre'; orden=!orden">Nombre <span class="caret pull-right"></span></th>
+      </tr>
+    </thead>
+    <tbody>
+    	<tr>
+    		<td>
+				<accordion close-others="true">
+					<accordion-group is-open="status.open" ng-repeat="entidad in categorias | orderBy:columna:orden  | filter:buscar">
+						<accordion-heading  contenteditable="true">
+						{{entidad.nombre}} <small>{{'- ' + entidad.subcategorias.length + ' Sub Categorias'}}</small>
+						<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+						<i class="pull-right glyphicon glyphicon-pencil" ng-click="modalactualizar(entidad);" style="margin-right: 20px;"></i>
+						</accordion-heading>
+						<ul class="list-group">
+						  <li class="list-group-item" ng-repeat="sub in entidad.subcategorias">
+						    <span class="badge" style="background-color:white;color:black;">
+						    	<i class="pull-right glyphicon glyphicon-pencil" ng-click="modalactualizar(sub);"></i>
+						    </span>
+						    {{sub.nombre}}
+						  </li>
+						</ul>
+					</accordion-group>
+				</accordion>
+			</td>
+		</tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th ng-click="columna = 'nombre'; orden=!orden">Nombre <span class="caret pull-right"></span></th>
+      </tr>
+    </tfoot>
+</table>
+
+</div>
+</div>

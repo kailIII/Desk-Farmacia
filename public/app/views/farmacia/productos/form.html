@@ -1,0 +1,43 @@
+
+<div class="modal-header">
+    <h3 class="modal-title text-center">Producto</h3>
+</div>
+
+<div class="modal-body content">
+    <div class="box">
+        <div class="box-body">
+            <alertas></alertas>
+            <form name="formulario" role="form" ng-init="cargarProductos();">
+                <div class="form-group">
+                    <label class="control-label" for="nombre"> Buscar:</label>
+                    <div class="controls">
+                        <input type="text" class="form-control" ng-model="txt" placeholder="Buscar" required />
+                    </div>
+                </div>
+                <div class="table-responsive" style="height:300px; overflow:auto;">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th ng-click="columna = 'nombre'; orden=!orden">Nombre <span class="caret pull-right"></span></th>
+                                <th class="text-center"><input type="checkbox" name="all" ng-click="all()"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="p in items | orderBy:columna:orden | filter:txt">
+                                <td>{{p.nombre}}</td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="productos" ng-model="productos" value="{{p}}"  ng-click="select(p)">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+			</form>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-primary pull-right" ng-click="Ok();" ng-disabled="selects">Guardar</button>
+            <a href="" class="btn" ng-click="Cancelar();">Cancelar</a>
+        </div>
+    </div>
+</div>
+

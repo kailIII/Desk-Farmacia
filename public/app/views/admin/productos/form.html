@@ -1,0 +1,82 @@
+
+<div class="modal-header">
+    <h3 class="modal-title text-center">Producto</h3>
+</div>
+
+<div class="modal-body content">
+    <div class="box">
+        <div class="box-body">
+        <div class="row">
+            <alertas></alertas>
+            <form name="formulario" role="form" >
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label" for="nombre"> * Nombre:</label>
+                    <div class="controls">
+                        <input type="text" class="form-control" ng-model="producto.nombre" placeholder="Nombre" required />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label" for="descripcion"> Descripción:</label>
+                    <div class="controls">
+                        <textarea class="form-control" rows="2" ng-model="producto.descripcion" placeholder="Descripcion"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="tipo"> * Tipo:</label>
+                    <div class="controls">
+                        <input type="tel" class="form-control" ng-model="producto.tipo" placeholder="Frasco, tubo etc..." required />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="unidad"> * Unidad:</label>
+                    <div class="controls">
+                        <input type="text" class="form-control" ng-model="producto.unidad" placeholder="Capsula, ML etc..." required />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="unidades"> * Unidades:</label>
+                    <div class="controls">
+                        <input type="number" min="0" step="any" class="form-control text-center" ng-model="producto.unidades" placeholder="unidades" required />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label"> * Categoria:</label>
+                    <div class="controls">
+                        <select class="form-control" ng-change="buscar_subcat(cat.id); producto.categoria = cat.nombre" 
+                            ng-options="opt as opt.nombre for opt in categorias" ng-model="cat">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label"> * Subcategoria:</label>
+                    <div class="controls">
+                        <select class="form-control" ng-change="producto.subcategoria_id = subcat.id; producto.subcategoria = subcat.nombre"
+                            ng-options="opt as opt.nombre for opt in subcategorias" ng-model="subcat">
+                        </select>
+                        <input type="hidden" ng-model="producto.subcategoria_id" required>
+                    </div>
+                </div>
+            </div>
+			</form>
+        </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-primary pull-right" ng-click="Ok(producto);" ng-disabled="formulario.$invalid">Guardar</button>
+            <a href="" class="btn" ng-click="Cancelar();">Cancelar</a>
+        </div>
+    </div>
+</div>
+

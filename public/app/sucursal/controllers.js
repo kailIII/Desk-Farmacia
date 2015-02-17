@@ -2,57 +2,21 @@
 
 angular.module('farmaciaControllers', [])
 
-.controller('MainCtrl', function (Api, $scope, $log, $modal) {
-	// Manejar el titulo
-		$scope.titulo = "Dashboard";
-		$scope.header = function(l){
-			$scope.titulo = l;
-		};
-	// Buscador
-		// $scope.buscar = function(q){
-		// 	$log.info(q);
-		// };
-	// Perfil
-		$scope.usuario = {};
- 		$scope.cargarDatos = function(usuario_id){
- 			Api.get('usuario/'+ usuario_id).then(function(data){
- 				$scope.usuario = data;
-	 		});
- 		};
-		$scope.modalactualizar = function (usuario) {
-	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/perfil/form.html',
-	      	size: 'lg',
-	     	controller:  function ($scope, $modalInstance, $modal, usuario) {
-	     		$scope.usuario = usuario;
-	     		$scope.imagenes = [{'nombre':'avatar_1.png'},{'nombre':'avatar_2.png'},{'nombre':'avatar_3.png'},{'nombre':'avatar_4.png'},{'nombre':'avatar_5.png'}];
-				$scope.select = function(img){
-					$scope.usuario.avatar = img.nombre;
-				};
-	     		$scope.Ok = function(usuario){
-	     			if (!formulario.$invalid) {
-			  			Api.post('actualizar', usuario).then(function(data){
-							$.growl("Proceso Exitoso", "success");
-							$scope.usuario = data;
-			  			},
-							function (data){
-							$.growl("Error: "+ data, "error");
-						});
-			  	 	}};
-			  	$scope.Cancelar = function () {
-				    $modalInstance.dismiss('cancelar');
-				};
-			},
-			resolve: {
-		        usuario: function () {
-		          return $scope.usuario;
-		        }
-		    }});
-		};
-
-})
-
 .controller('DashboardCtrl', function (Api, $scope, $log, $modal) {
+
+	// Cajas
+	$scope.cajas = [{nombre:'Ventas', valor:'23', url:'ventas', clase:'bg-aqua', icono:'ion-stats-bars'},
+					{nombre:'Compras', valor:'253', url:'compras', clase:'bg-green', icono:'ion-bag'},
+					{nombre:'Requisiciones', valor:'253', url:'requisiciones', clase:'bg-yellow', icono:'ion-arrow-return-left'},
+					{nombre:'Productos', valor:'253', url:'productos', clase:'bg-red', icono:'ion-pie-graph'},
+					];
+
+
+	/* Graficos */
+ 	$scope.barventas = [{ y: "2006", a: 100, b: 90 }, { y: "2007", a: 75,  b: 65 }, { y: "2008", a: 50,  b: 40 },
+			    		 { y: "2009", a: 75,  b: 65 }, { y: "2010", a: 50,  b: 40 }, { y: "2011", a: 75,  b: 65 },
+			    		 { y: "2012", a: 100, b: 90 } ];
+
 
 })
 
@@ -75,7 +39,7 @@ angular.module('farmaciaControllers', [])
 
 	$scope.modalcrear = function () {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/productos_sucursal/form.html',
+	      	templateUrl: 'app/views/sucursal/productos/form.html',
 	      	size: 'lg',
 	     	controller:  function ($scope, $modalInstance, Api) {
 	     		var selects = [];
@@ -107,7 +71,7 @@ angular.module('farmaciaControllers', [])
 	     		$scope.Ok = function(){
 	     			if (!formulario.$invalid) {
 	     				for (var i = selects.length - 1; i >= 0; i--) {
-			  	 		Api.post('f_productos/guardar', selects[i]).then(function(data){
+			  	 		Api.post('s_productos/guardar', selects[i]).then(function(data){
 							$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}]; 
 							$scope.producto = {};
 			  			},
@@ -132,7 +96,7 @@ angular.module('farmaciaControllers', [])
 
 	$scope.modalactualizar = function (producto_id) {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/productos/form.html',
+	      	templateUrl: 'app/views/sucursal/productos/form.html',
 	      	size: 'lg',
 	     	controller:  function ($scope, $modalInstance, producto) {
 	     		$scope.producto = producto;
@@ -152,7 +116,7 @@ angular.module('farmaciaControllers', [])
 		    }
 	    });
 	    modalInstance.result.then(function (producto) {
-  			Api.post('productos/guardar', producto).then(function(data){
+  			Api.post('s_productos/guardar', producto).then(function(data){
 				$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
 				$log.info(data);
 				$scope.producto = {};
@@ -167,7 +131,7 @@ angular.module('farmaciaControllers', [])
 
 	$scope.eliminar = function(producto){
 		if (confirm('¿Desea eliminar el Registro?')) {
-			Api.post('productos/eliminar/'+ producto.id).then(function(data){
+			Api.post('s_productos/eliminar/'+ producto.id).then(function(data){
 				$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
 				for (var i in $scope.productos ) {
 					if ($scope.productos[i].id === data.id ){
@@ -191,14 +155,14 @@ angular.module('farmaciaControllers', [])
 	$scope.cliente = {};
 
 	$scope.cargarDatos = function(){
-	    Api.get('clientes/ver').then(function(data){
+	    Api.get('s_clientes/ver').then(function(data){
 			$scope.clientes = data;
 		});
 	};
 
 	$scope.modalcrear = function () {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/clientes/form.html',
+	      	templateUrl: 'app/views/farmacia/clientes/form.html',
 	      	windowClass:'normal',
 	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance) {
@@ -213,7 +177,7 @@ angular.module('farmaciaControllers', [])
 	     		};
 	     		$scope.Ok = function(cliente){
 	     			if (!formulario.$invalid) {
-			  			Api.post('clientes/guardar', cliente).then(function(data){
+			  			Api.post('s_clientes/guardar', cliente).then(function(data){
 							$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
 							clientes.push(cliente);
 							$scope.cliente = {};
@@ -241,7 +205,7 @@ angular.module('farmaciaControllers', [])
 
 	$scope.modalactualizar = function (cliente_id) {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/clientes/form.html',
+	      	templateUrl: 'app/views/farmacia/clientes/form.html',
 	      	windowClass:'normal',
 	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance, cliente) {
@@ -259,7 +223,7 @@ angular.module('farmaciaControllers', [])
 	     		};
 	     		$scope.Ok = function(cliente){
 	     			if (!formulario.$invalid) {
-			  	 		Api.post('clientes/guardar', cliente).then(function(data){
+			  	 		Api.post('s_clientes/guardar', cliente).then(function(data){
   	 						$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
   	 		  			},
   	 					function (data){
@@ -305,14 +269,14 @@ angular.module('farmaciaControllers', [])
 	$scope.alertas = []
 
 	$scope.cargarDatos = function(){
-	    Api.get('ventas/ver').then(function(data){
+	    Api.get('s_ventas/ver').then(function(data){
 			$scope.ventas = data;
 		});
 	};
 
 	$scope.modalcrear = function () {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/ventas/form.html',
+	      	templateUrl: 'app/views/sucursal/ventas/form.html',
 	      	windowClass:'full',
 	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance) {
@@ -426,7 +390,7 @@ angular.module('farmaciaControllers', [])
 			  		$scope.ventas.push($scope.venta);
 			  		var ventaTotal = $scope.ventas.concat($scope.detalles);
 			  		$log.info(ventaTotal);
-  		  			Api.post('ventas/guardar', ventaTotal).then(function(data){
+  		  			Api.post('s_ventas/guardar', ventaTotal).then(function(data){
   						$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
 				  		$scope.ingresados.push(data);
 				  		$scope.iniciar();
@@ -452,14 +416,14 @@ angular.module('farmaciaControllers', [])
 
 	$scope.modalDetalle = function (venta) {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/ventas/listaventa.html',
+	      	templateUrl: 'app/views/sucursal/ventas/listaventa.html',
 	      	size: 'lg',
 	     	controller:  function ($scope, $modalInstance, $log, venta) {
 	     		$scope.venta = venta;
 	     		$scope.detalles = [];
 	     		$scope.total = 0;
 
-     		    Api.get('ventas/detalles/' + venta.id).then(function(data){
+     		    Api.get('s_ventas/detalles/' + venta.id).then(function(data){
      				$scope.detalles = data;
      			});
 
@@ -483,25 +447,26 @@ angular.module('farmaciaControllers', [])
 
 })
 
-.controller('RequisicionesCtrl', function (Api, $scope, $modal, $log){
+.controller('RequisicionesCtrl', function (Api, $scope, $modal, $log, $interval){
 	$scope.requisiciones = [];
 
 	// Msjs
-	$scope.cargarMsj = function(){
-	    Api.get('requisiciones/estado/Enviado').then(function(data){
+	$interval(function(){
+		$log.info('cargando msjs');
+	    Api.get('s_requisiciones/estado/Enviado').then(function(data){
 			$scope.msjs = data;
 		});
-	};
+	}, 10000);
 
 	$scope.cargarDatos = function(){
-	    Api.get('requisiciones/ver').then(function(data){
+	    Api.get('s_requisiciones/ver').then(function(data){
 			$scope.requisiciones = data;
 		});
 	};
 
 	$scope.modalcrear = function () {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/requisiciones/form.html',
+	      	templateUrl: 'app/views/sucursal/requisiciones/form.html',
 	      	windowClass:'normal',
 	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance) {
@@ -519,7 +484,7 @@ angular.module('farmaciaControllers', [])
 		     		$scope.ver = false;
 	     		};
  				
- 				Api.get('requisiciones/sucursales').then(function(data){
+ 				Api.get('s_requisiciones/sucursales').then(function(data){
 					$scope.sucursales = data;
 				});
 
@@ -566,7 +531,7 @@ angular.module('farmaciaControllers', [])
      				$scope.requisiciones.push($scope.requisicion);
      				var total = $scope.requisiciones.concat($scope.detalles);
      				$log.info(total);
-		  	 		Api.post('requisiciones/guardar', total).then(function(data){
+		  	 		Api.post('s_requisiciones/guardar', total).then(function(data){
 						$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
 						agregados.push($scope.requisicion);
 						iniciar();
@@ -591,14 +556,14 @@ angular.module('farmaciaControllers', [])
 
 	$scope.modalDetalle = function (requisicion) {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/requisiciones/listarequisiciones.html',
+	      	templateUrl: 'app/views/sucursal/requisiciones/listarequisiciones.html',
 	      	size: 'lg',
 	     	controller:  function ($scope, $modalInstance, $log, requisicion) {
 	     		$scope.requisicion = requisicion;
 	     		$scope.detalles = [];
 	     		$scope.total = 0;
 
-     		    Api.get('requisiciones/detalles/' + requisicion.id).then(function(data){
+     		    Api.get('s_requisiciones/detalles/' + requisicion.id).then(function(data){
      				$scope.detalles = data;
      			});
 
@@ -631,7 +596,7 @@ angular.module('farmaciaControllers', [])
 
 	$scope.modalcrear = function () {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/usuarios_admin/form.html',
+	      	templateUrl: 'app/views/farmacia/usuarios/form.html',
 	      	windowClass: 'normal',
 	      	backdrop : 'static',
 	     	controller:  function ($scope, $modalInstance,$log, Api) {
@@ -668,7 +633,7 @@ angular.module('farmaciaControllers', [])
 
 	$scope.modalactualizar = function (usuario_id) {
 	    var modalInstance = $modal.open({
-	      	templateUrl: 'app/views/usuarios_admin/form.html',
+	      	templateUrl: 'app/views/farmacia/usuarios/form.html',
 	      	size: 'lg',
 	     	controller:  function ($scope, $modalInstance, usuario, $log) {
 	     		$scope.usuario = usuario;
@@ -689,7 +654,7 @@ angular.module('farmaciaControllers', [])
 	    });
 
 	    modalInstance.result.then(function (usuario) {
-  			Api.post('usuarios/guardar', usuario).then(function(data){
+  			Api.post('s_usuarios/guardar', usuario).then(function(data){
 				$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
 				$scope.usuario = {};
   			},
@@ -705,7 +670,7 @@ angular.module('farmaciaControllers', [])
 	$scope.sucursal = [];
 	$scope.alertas = [];
 
-    Api.get('sucursales/sucursal').then(function(data){
+    Api.get('s_sucursales/sucursal').then(function(data){
 		$scope.sucursal = data[0];
 	});
 	
@@ -722,7 +687,7 @@ angular.module('farmaciaControllers', [])
 	};
 	$scope.Ok = function(sucursal){
 		if (!formulario.$invalid) {
-			Api.post('sucursales/guardar', sucursal).then(function(data){
+			Api.post('s_sucursales/guardar', sucursal).then(function(data){
 			$scope.alertas = [{'type' 	: 'success', 'msg'	: 'Proceso Exitoso!!!'}];
 			},
 			function (data){

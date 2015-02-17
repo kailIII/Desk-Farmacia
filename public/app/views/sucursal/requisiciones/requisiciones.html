@@ -1,0 +1,41 @@
+<div class="box">
+
+<toolbar></toolbar>
+
+<div class="box-body table-responsive">
+<table class="table table-bordered table-striped" ng-init="cargarDatos();">
+    <thead>
+      <tr>
+        <th ng-click="columna = 'fecha'; orden=!orden">Fecha <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'sucursal'; orden=!orden">Sucursal <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'estado'; orden=!orden">Estado <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'num'; orden=!orden">Productos <span class="caret pull-right"></span></th>
+        <th class="text-center"><i class="fa fa-cog"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="entidad in requisiciones | orderBy:columna:orden  | filter:buscar">
+          <td>{{entidad.fecha}}</td> 
+          <td>{{entidad.sucursal2}}</td>
+          <td>{{entidad.estado}}</td>
+          <td class="text-center">{{entidad.num}}</td>
+          <td class="text-center">
+            <button class="btn btn-xs" type="button" title="Detalles" ng-click="modalDetalle(entidad)">
+                <i class="glyphicon glyphicon-th-list"></i>
+            </button>
+          </td>
+        </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th ng-click="columna = 'fecha'; orden=!orden">Fecha <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'sucursal'; orden=!orden">Sucursal <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'estado'; orden=!orden">Estado <span class="caret pull-right"></span></th>
+        <th ng-click="columna = 'num'; orden=!orden">Productos <span class="caret pull-right"></span></th>
+        <th class="text-center"><i class="fa fa-cog"></i></th>
+      </tr>
+    </tfoot>
+</table>
+
+</div>
+</div>

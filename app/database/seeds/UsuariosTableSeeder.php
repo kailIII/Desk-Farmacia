@@ -8,9 +8,10 @@ class UsuariosTableSeeder extends Seeder
             'sucursal_id'       => '1',
             'user'              => 'Jesus Alvarado',
             'email'             => 'admon@admon.com',
-            'password'          => Hash::make('admon'),
+            'password'          => Hash::make('1234'),
             'avatar'            => 'avatar_5.png',
-            'tipo_usuario_id'  => '1',
+            'activa'	        => true,
+            'tipo_usuario_id'  	=> '1',
         ));
 
         // Admon Farmacia
@@ -18,8 +19,9 @@ class UsuariosTableSeeder extends Seeder
             'sucursal_id'       => '2',
             'user'              => 'Jesus Alvarado',
             'email'             => 'farmacia@farmacia.com',
-            'password'          => Hash::make('farmacia'),
+            'password'          => Hash::make('1234'),
             'avatar'            => 'avatar_3.png',
+            'activa'	        => true,
             'tipo_usuario_id'   => '2',
         ));
 
@@ -28,8 +30,9 @@ class UsuariosTableSeeder extends Seeder
             'sucursal_id'       => '2',
             'user'              => 'Jesus Alvarado',
             'email'             => 'sucursal@sucursal.com',
-            'password'          => Hash::make('sucursal'),
+            'password'          => Hash::make('1234'),
             'avatar'            => 'avatar_1.png',
+            'activa'	        => true,
             'tipo_usuario_id'   => '3',
         ));
 
@@ -38,8 +41,9 @@ class UsuariosTableSeeder extends Seeder
             'sucursal_id'       => '2',
             'user'              => 'Jesus Alvarado',
             'email'             => 'vendedor@vendedor.com',
-            'password'          => Hash::make('vendedor'),
+            'password'          => Hash::make('1234'),
             'avatar'            => 'avatar_4.png',
+            'activa'	        => true,
             'tipo_usuario_id'   => '4',
         ));
     }

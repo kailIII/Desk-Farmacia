@@ -1,0 +1,19 @@
+CREATE VIEW
+
+v_productos_sucursal AS
+
+SELECT ps.id, p.nombre, p.descripcion, p.unidad, p.unidades, p.tipo, ps.precio, ps.cantidad, ps.minimo, ps.ubicacion, sc.nombre as subcategoria, 
+
+c.nombre as categoria, ps.sucursal_id, pf.farmacia_id,  cp.vencimiento, cp.lote FROM productos_sucursales ps
+
+LEFT JOIN productos_farmacias pf ON pf.id = ps.producto_farmacia_id
+
+LEFT JOIN productos p ON p.id = pf.producto_id
+
+INNER JOIN subcategorias sc ON sc.id = p.subcategoria_id
+
+INNER JOIN categorias c ON c.id = sc.categoria_id
+
+LEFT JOIN detalles_compras cd ON cd.producto_farmacia_id = pf.id
+
+LEFT JOIN compras cp ON cp.id = cd.compra_id

@@ -24,7 +24,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         {
             if($this->validar($datos)) 
             {
-                $datos['password'] = Hash::make($datos['password']);
+            	$datos['password'] = Hash::make($datos['password']);
                 $this->fill($datos);
                 $this->save();
                
@@ -42,7 +42,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         {
             $reglas = array(
                 'user' => 'required|max:100',
-                'email' => 'email|required|max:100|unique:users',
+                'email' => 'email|required|max:100|', //unique:users',
                 'avatar' => 'required|max:100',
                 'password' => 'required|min:6|confirmed',
                 'sucursal_id' => 'required',
